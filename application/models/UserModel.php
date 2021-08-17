@@ -84,4 +84,39 @@ class UserModel extends CI_Model
         $this->db->where('id_aplikasi', $id);
         $this->db->update('aplikasi');
     }
+
+    /**
+     * Function getPengguna digunakan untuk mengambil data seluruh pengguna dalam salah satu aplikasi
+     */
+    public function getPengguna($idAplikasi)
+    {
+        $query = $this->db->get_where('pengguna_aplikasi', ['aplikasi_id' => $idAplikasi]);
+        return $query->result_array();
+    }
+
+    /**
+     * Function prosesStorePengguna digunakan untuk menyimpan pengguna aplikasi baru ke database
+     */
+    public function prosesStorePengguna($data)
+    {
+        $this->db->insert('pengguna_aplikasi', $data);
+    }
+
+    /**
+     * Function updatePengguna digunakan untuk mengubah data pengguna aplikasi yang ada di database
+     */
+    public function updatePengguna($idPengguna, $set)
+    {
+        $this->db->where('id_pengguna', $idPengguna);
+        $this->db->update('pengguna_aplikasi', $set);
+    }
+
+    /**
+     * Function prosesDeletePengguna digunakan 
+     * untuk menghapus pengguna aplikasi di database berdasarkan id yang dipilih
+     */
+    public function prosesDeletePengguna($id)
+    {
+        $this->db->delete('pengguna_aplikasi', ['id_pengguna' => $id]);
+    }
 }

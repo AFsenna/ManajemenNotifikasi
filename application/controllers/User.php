@@ -236,7 +236,7 @@ class User extends CI_Controller
      * Function pengguna digunakan untuk menuju tampilan pengguna
      */
 
-    public function pengguna($namaAplikasi, $id)
+    public function pengguna($namaAplikasi, $idAplikasi)
     {
         $data['title'] = "Pengguna Aplikasi $namaAplikasi";
         $data['namaAplikasi'] = $namaAplikasi;
@@ -246,12 +246,89 @@ class User extends CI_Controller
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
         $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
+        $data['id_aplikasi'] = $idAplikasi;
+        $data['pengguna'] = $this->UserModel->getPengguna($idAplikasi);
 
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
         $this->load->view('User/pengguna', $data);
         $this->load->view('Template/footer');
+    }
+
+    /**
+     * Function storePengguna digunakan untuk menyimpan data pengguna aplikasi
+     */
+    public function storePengguna($namaAplikasi, $idAplikasi)
+    {
+        $this->form_validation->set_rules('nama', 'Name', 'required|trim');
+        $this->form_validation->set_rules('phone', 'Phone', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+
+        if ($this->form_validation->run() == false) {
+            $this->pengguna($namaAplikasi, $idAplikasi);
+        } else {
+            $nama = $this->input->post('nama');
+            $phone = $this->input->post('phone');
+            $email = $this->input->post('email');
+
+            $data = [
+                'nama_pengguna' => $nama,
+                'notelp_pengguna' => $phone,
+                'email_pengguna' => $email,
+                'aplikasi_id' => $idAplikasi
+            ];
+            $this->UserModel->prosesStorePengguna($data);
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                New Application user added!
+            </div>');
+            redirect('User/pengguna/' . $namaAplikasi . '/' . $idAplikasi);
+        }
+    }
+
+    /**
+     * Function editPengguna digunakan untuk mengubah data pengguna aplikasi yang sudah ada
+     */
+    public function editPengguna($namaAplikasi, $idAplikasi, $idPengguna)
+    {
+        $this->form_validation->set_rules('nama', 'Name', 'required|trim');
+        $this->form_validation->set_rules('phone', 'Phone', 'required|trim');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+
+        if ($this->form_validation->run() == false) {
+            $this->pengguna($namaAplikasi, $idAplikasi);
+        } else {
+            $nama = $this->input->post('nama');
+            $phone = $this->input->post('phone');
+            $email = $this->input->post('email');
+            $set = [
+                'nama_pengguna' => $nama,
+                'notelp_pengguna' => $phone,
+                'email_pengguna' => $email,
+            ];
+            $this->UserModel->updatePengguna($idPengguna, $set);
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application user updated!
+            </div>');
+            redirect('User/pengguna/' . $namaAplikasi . '/' . $idAplikasi);
+        }
+    }
+
+    /**
+     * Function deletePengguna digunakan menghapus aplikasi yang dipilih
+     * dan dengan syarat belum ada pengguna yang terdaftar
+     */
+
+    public function deletePengguna($namaAplikasi, $idAplikasi, $id)
+    {
+        $this->UserModel->prosesDeletePengguna($id);
+        $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application user deleted!
+            </div>');
+        redirect('User/pengguna/' . $namaAplikasi . '/' . $idAplikasi);
     }
 
     /**
