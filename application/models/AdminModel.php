@@ -37,9 +37,9 @@ class AdminModel extends CI_Model
     }
 
     /**
-     * Function deleteRole digunakan untuk menghapus role di database berdasarkan id yang dipilih
+     * Function prosesDeleteRole digunakan untuk menghapus role di database berdasarkan id yang dipilih
      */
-    public function deleteRole($id)
+    public function prosesDeleteRole($id)
     {
         $this->db->delete('role', ['id_role' => $id]);
     }

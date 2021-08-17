@@ -3,6 +3,8 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Aplikasi</h1>
+    <?= form_error('aplikasi', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= $this->session->flashdata('message'); ?>
     <?php if ($role_id == 2) : ?>
         <div class="mb-3">
             <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newAplikasi">
@@ -26,6 +28,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Aplikasi</th>
+                            <th>Status</th>
                             <?php if ($role_id == 1) : ?>
                                 <th>Jumlah Pengguna</th>
                             <?php elseif ($role_id == 2) : ?>
@@ -35,21 +38,41 @@
                     </thead>
                     <tbody>
                         <?php $no = 1;
-                        foreach ($aplikasi as $app) : ?>
+                        foreach ($allApp as $app) : ?>
                             <tr>
                                 <td><?= $no ?></td>
-                                <td><?= $app['nama_aplikasi'] ?></td>
+                                <td><?= ucfirst($app['nama_aplikasi']) ?></td>
+                                <td>
+                                    <?php if ($app['status'] == 1) : ?>
+                                        <div class="badge badge-pill badge-success" style="min-width: 100px; font-size:15px">Aktif</div>
+                                    <?php elseif ($app['status'] == 0) : ?>
+                                        <div class="badge badge-pill badge-danger" style="min-width: 100px; font-size:15px">Non-Aktif</div>
+                                    <?php endif; ?>
+                                </td>
                                 <?php if ($role_id == 1) : ?>
                                     <td><?= $app['jumlah_pengguna']; ?></td>
                                 <?php elseif ($role_id == 2) : ?>
                                     <td>
-                                        <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
+                                        <?php if ($app['status'] == 1) : ?>
+                                            <a href="<?= base_url('User/nonAktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-danger btn-icon-split">
+                                                <span class="text" data-toggle="tooltip" title="Non-Aktifkan Aplikasi">
+                                                    <i class="fas fa-fw fa-times"></i>
+                                                </span>
+                                            </a>
+                                        <?php elseif ($app['status'] == 0) : ?>
+                                            <a href="<?= base_url('User/aktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-success btn-icon-split">
+                                                <span class="text" data-toggle="tooltip" title="Aktifkan Aplikasi">
+                                                    <i class="fas fa-fw fa-check"></i>
+                                                </span>
+                                            </a>
+                                        <?php endif; ?>
+                                        <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi<?= $app['id_aplikasi'] ?>">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </span>
                                             <span class="text">Edit</span>
                                         </button>
-                                        <a href="" class="btn btn-danger btn-icon-split">
+                                        <a href="<?= base_url('User/deleteAplikasi/' . $app['id_aplikasi']) ?>" class="btn btn-danger btn-icon-split">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
@@ -78,7 +101,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User/aplikasi') ?>" method="POST">
+            <form action="<?= base_url('User/addAplikasi') ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" name="aplikasi" class="form-control" id="aplikasi" placeholder="Nama Aplikasi">
@@ -95,27 +118,29 @@
 <!-- endmodal -->
 
 <!-- Modal edit Aplikasi-->
-<div class="modal fade" id="editAplikasi" data-backdrop="static" tabindex="-1" aria-labelledby="editAplikasiLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editAplikasiLabel">Edit Aplikasi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('User/aplikasi') ?>" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" name="aplikasi" class="form-control" id="newaplikasi" placeholder="Nama Aplikasi" value="Cabriz">
+<?php foreach ($allApp as $app) : ?>
+    <div class="modal fade" id="editAplikasi<?= $app['id_aplikasi'] ?>" data-backdrop="static" tabindex="-1" aria-labelledby="editAplikasiLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAplikasiLabel">Edit Aplikasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= base_url('User/editAplikasi/' . $app['id_aplikasi']) ?>" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" name="aplikasi" class="form-control" id="newaplikasi" placeholder="Nama Aplikasi" value="<?= ucfirst($app['nama_aplikasi']) ?>">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+<?php endforeach; ?>
 <!-- endmodal -->

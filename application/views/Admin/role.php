@@ -99,7 +99,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('Admin/updateRole/') . $row['id_role'] ?>" method="POST">
+                <form action="<?= base_url('Admin/editRole/') . $row['id_role'] ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" name="role" class="form-control" id="newrole" placeholder="Nama Role" value="<?= ucfirst($row['nama']) ?>">

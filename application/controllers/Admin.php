@@ -81,9 +81,9 @@ class Admin extends CI_Controller
     }
 
     /**
-     * Function updateRole digunakan untuk mengubah data role yang sudah ada
+     * Function editRole digunakan untuk mengubah data role yang sudah ada
      */
-    public function updateRole($id)
+    public function editRole($id)
     {
         $this->form_validation->set_rules('role', 'Role', 'required');
         if ($this->form_validation->run() == false) {
@@ -114,7 +114,7 @@ class Admin extends CI_Controller
             </div>');
             redirect('Admin/role');
         } else {
-            $this->AdminModel->deleteRole($id);
+            $this->AdminModel->prosesDeleteRole($id);
             $this->session->set_flashdata('message', '
             <div class="alert alert-success" role="alert">
                 Role deleted!

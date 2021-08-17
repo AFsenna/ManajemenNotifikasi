@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * Pada aplikasi status 1 untuk aktif dan 0 untuk tidak aktif 
+ */
+
+/**
  * defined('BASEPATH') or exit('No direct script access allowed');
  * Berfungsi untuk memproteksi agar script yang kita buat tidak dapat diakses secara langsung 
  * dan harus melalui www.namaweb.com/controller
@@ -116,14 +120,116 @@ class User extends CI_Controller
     public function aplikasi()
     {
         $data['title'] = 'Aplikasi';
+
         $session_data = $this->session->userdata('datauser');
+
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
+        $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
+        $data['allApp'] = $this->UserModel->getAplikasi($session_data['id_user']);
+
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
-        $this->load->view('User/aplikasi');
+        $this->load->view('User/aplikasi', $data);
         $this->load->view('Template/footer');
+    }
+
+    /**
+     * Function storeAplikasi digunakan untuk menyimpan aplikasi baru milik user
+     */
+    public function addAplikasi()
+    {
+        $this->form_validation->set_rules('aplikasi', 'Application', 'required|trim');
+        if ($this->form_validation->run() == false) {
+            $this->aplikasi();
+        } else {
+            $aplikasi = $this->input->post('aplikasi');
+            $session_data = $this->session->userdata('datauser');
+            $id_user = $session_data['id_user'];
+            $data = [
+                'nama_aplikasi' => $aplikasi,
+                'user_id' => $id_user,
+                'status' => 1
+            ];
+            $this->UserModel->storeAplikasi($data);
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                New Application added!
+            </div>');
+            redirect('User/aplikasi');
+        }
+    }
+
+    /**
+     * Function aktifkan digunakan untuk mengaktifkan aplikasi
+     */
+
+    public function aktifkan($id)
+    {
+        $this->UserModel->prosesAktifkan($id);
+        $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application has been enabled!
+            </div>');
+        redirect('User/aplikasi');
+    }
+
+    /**
+     * Function nonAktifkan digunakan untuk mengaktifkan aplikasi
+     */
+
+    public function nonAktifkan($id)
+    {
+        $this->UserModel->prosesNonAktifkan($id);
+        $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application has been disabled!
+            </div>');
+        redirect('User/aplikasi');
+    }
+
+    /**
+     * Function editAplikasi digunakan untuk mengubah data aplikasi yang sudah ada
+     */
+    public function editAplikasi($id)
+    {
+        $this->form_validation->set_rules('aplikasi', 'Application', 'required');
+        if ($this->form_validation->run() == false) {
+            $this->aplikasi();
+        } else {
+            $aplikasi = $this->input->post('aplikasi');
+            $this->UserModel->updateAplikasi($id, $aplikasi);
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application updated!
+            </div>');
+            redirect('User/aplikasi');
+        }
+    }
+
+    /**
+     * Function deleteAplikasi digunakan menghapus aplikasi yang dipilih
+     * dan dengan syarat belum ada pengguna yang terdaftar
+     */
+
+    public function deleteAplikasi($id)
+    {
+        $cek = $this->UserModel->cekPenggunaApp($id);
+        if ($cek) {
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-danger" role="alert">
+                You cant delete this Application!
+            </div>');
+            redirect('User/aplikasi');
+        } else {
+            $this->UserModel->prosesDeleteAplikasi($id);
+            $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                Application deleted!
+            </div>');
+            redirect('User/aplikasi');
+        }
     }
 
     /**
