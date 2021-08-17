@@ -32,10 +32,8 @@ class User extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Profile';
-
         $session_data = $this->session->userdata('datauser');
-
+        $data['title'] = 'Profile';
         $data['nama'] = $session_data['nama_lengkap'];
         $data['username'] = $session_data['username'];
         $data['email'] = $session_data['email'];
@@ -120,10 +118,8 @@ class User extends CI_Controller
      */
     public function aplikasi()
     {
-        $data['title'] = 'Aplikasi';
-
         $session_data = $this->session->userdata('datauser');
-
+        $data['title'] = 'Aplikasi';
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
         $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
@@ -239,11 +235,9 @@ class User extends CI_Controller
 
     public function pengguna($namaAplikasi, $idAplikasi)
     {
+        $session_data = $this->session->userdata('datauser');
         $data['title'] = "Pengguna Aplikasi $namaAplikasi";
         $data['namaAplikasi'] = $namaAplikasi;
-
-        $session_data = $this->session->userdata('datauser');
-
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
         $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
@@ -337,11 +331,9 @@ class User extends CI_Controller
      */
     public function notifikasi($namaAplikasi, $id)
     {
+        $session_data = $this->session->userdata('datauser');
         $data['title'] = "Notifikasi Milik $namaAplikasi";
         $data['namaAplikasi'] = $namaAplikasi;
-
-        $session_data = $this->session->userdata('datauser');
-
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
         $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
@@ -358,10 +350,12 @@ class User extends CI_Controller
      */
     public function changepassword()
     {
-        $data['title'] = "Change Password";
         $session_data = $this->session->userdata('datauser');
+        $data['title'] = "Change Password";
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
+        $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
+
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
