@@ -6,12 +6,11 @@ class AuthModel extends CI_Model
      * Function login digunakan untuk memanggil data pada database 
      * dimana username dan password didapat dari inputan user
      */
-    public function login($username, $password)
+    public function login($username)
     {
         $this->db->select('*');
         $this->db->from('user');
         $this->db->where('username', $username);
-        $this->db->where('password', $password);
         $this->db->limit(1);
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
@@ -90,17 +89,33 @@ class AuthModel extends CI_Model
     }
 
     /**
-     * Function getToken2 digunakan untuk mendapatkan data token berdasarkan email yang dikirimkan
+     * Function getToken digunakan untuk mendapatkan data token berdasarkan token yang dikirimkan
      * melalui url yang didapat di email user
      */
-    public function getToken2($email)
+    public function getTokenbytk($token)
     {
         $this->db->select('*');
         $this->db->from('token');
-        $this->db->where('token', $email);
+        $this->db->where('token', $token);
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
             return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+    /**
+     * Function getToken2 digunakan untuk mendapatkan data token berdasarkan email yang dikirimkan
+     * melalui url yang didapat di email user
+     */
+    public function getTokenbyem($email)
+    {
+        $this->db->select('*');
+        $this->db->from('token');
+        $this->db->where('email', $email);
+        $query = $this->db->get();
+        if ($query->num_rows() >= 1) {
+            return $query->result();
         } else {
             return false;
         }
@@ -130,5 +145,15 @@ class AuthModel extends CI_Model
     public function deleteUser($email)
     {
         $this->db->delete('user', ['email' => $email]);
+    }
+
+    /**
+     * Function updatePassword digunakan untuk mengupdate password baru user
+     */
+    public function updatePassword($password, $email)
+    {
+        $this->db->set('password', $password);
+        $this->db->where('email', $email);
+        $this->db->update('user');
     }
 }
