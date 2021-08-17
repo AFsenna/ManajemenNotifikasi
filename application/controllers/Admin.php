@@ -150,13 +150,17 @@ class Admin extends CI_Controller
     public function aplikasi()
     {
         $data['title'] = 'Aplikasi';
+
         $session_data = $this->session->userdata('datauser');
+
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
+        $data['aplikasi'] = $this->AdminModel->getAplikasi();
+
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
-        $this->load->view('User/aplikasi');
+        $this->load->view('User/aplikasi', $data);
         $this->load->view('Template/footer');
     }
 }

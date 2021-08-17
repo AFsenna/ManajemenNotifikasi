@@ -26,32 +26,40 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Aplikasi</th>
-                            <?php if ($role_id == 2) : ?>
+                            <?php if ($role_id == 1) : ?>
+                                <th>Jumlah Pengguna</th>
+                            <?php elseif ($role_id == 2) : ?>
                                 <th style="max-width: 300px;">Aksi</th>
                             <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Cabriz</td>
-                            <?php if ($role_id == 2) : ?>
-                                <td>
-                                    <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-fw fa-edit"></i>
-                                        </span>
-                                        <span class="text">Edit</span>
-                                    </button>
-                                    <a href="" class="btn btn-danger btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-fw fa-trash"></i>
-                                        </span>
-                                        <span class="text">Hapus</span>
-                                    </a>
-                                </td>
-                            <?php endif; ?>
-                        </tr>
+                        <?php $no = 1;
+                        foreach ($aplikasi as $app) : ?>
+                            <tr>
+                                <td><?= $no ?></td>
+                                <td><?= $app['nama_aplikasi'] ?></td>
+                                <?php if ($role_id == 1) : ?>
+                                    <td><?= $app['jumlah_pengguna']; ?></td>
+                                <?php elseif ($role_id == 2) : ?>
+                                    <td>
+                                        <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-fw fa-edit"></i>
+                                            </span>
+                                            <span class="text">Edit</span>
+                                        </button>
+                                        <a href="" class="btn btn-danger btn-icon-split">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-fw fa-trash"></i>
+                                            </span>
+                                            <span class="text">Hapus</span>
+                                        </a>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php $no++;
+                        endforeach; ?>
                     </tbody>
                 </table>
             </div>

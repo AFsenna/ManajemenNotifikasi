@@ -64,4 +64,18 @@ class AdminModel extends CI_Model
     {
         return $this->db->get('aplikasi')->result_array();
     }
+
+    /**
+     * Function getAplikasi digunakan untuk mendapatkan data aplikasi dan jumlah pengguna aplikasi tersebut
+     */
+    public function getAplikasi()
+    {
+        $this->db->select('aplikasi.*');
+        $this->db->select('COALESCE(COUNT(pengguna_aplikasi.nama_pengguna),0) AS jumlah_pengguna');
+        $this->db->from('aplikasi');
+        $this->db->join('pengguna_aplikasi', 'aplikasi.id_aplikasi = pengguna_aplikasi.aplikasi_id', 'left');
+        $this->db->group_by('aplikasi.id_aplikasi');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }
