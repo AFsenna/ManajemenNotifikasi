@@ -101,6 +101,7 @@ class User extends CI_Controller
                 'username' => ucfirst($username),
                 'notelp' => $notelp,
                 'email' => $email,
+                'password' => $session_data['password'],
                 'status' => $session_data['status'],
                 'role_id' => $session_data['role_id'],
                 'id_user' => $session_data['id_user']
@@ -366,5 +367,48 @@ class User extends CI_Controller
         $this->load->view('Template/topbar', $data);
         $this->load->view('User/changepassword');
         $this->load->view('Template/footer');
+    }
+
+    /**
+     * Function updatePassword digunakan untuk mengubah password user 
+     * dengan syarat harus memasukkan password yang sebelumnya
+     */
+    public function updatePassword()
+    {
+        $this->form_validation->set_rules('password', 'Curent Password', 'required|trim');
+        $this->form_validation->set_rules('newpassword1', 'New Password', 'required|trim|min_length[3]|max_length[6]|matches[newpassword2]');
+        $this->form_validation->set_rules('newpassword2', 'Confirm New Password', 'required|trim|matches[newpassword1]');
+
+        if ($this->form_validation->run() == false) {
+            $this->changepassword();
+        } else {
+            $session_data = $this->session->userdata('datauser');
+            $oldpassword = $session_data['password'];
+            $password = $this->input->post('password');
+            $newpassword = $this->input->post('newpassword1');
+            if (!password_verify($password, $oldpassword)) {
+                $this->session->set_flashdata('message', '
+                <div class="alert alert-danger" role="alert">
+                    Wrong current password!
+                </div>');
+                redirect('User/changepassword');
+            } else {
+                if ($password == $newpassword) {
+                    $this->session->set_flashdata('message', '
+                    <div class="alert alert-danger" role="alert">
+                        New password cannot be the same as current password!
+                    </div>');
+                    redirect('User/changepassword');
+                } else {
+                    $passwordhash = password_hash($newpassword, PASSWORD_DEFAULT);
+                    $this->UserModel->prosesUpdatePassword($passwordhash, $session_data['email']);
+                    $this->session->set_flashdata('message', '
+                    <div class="alert alert-success" role="alert">
+                        Password changed!
+                    </div>');
+                    redirect('User/changepassword');
+                }
+            }
+        }
     }
 }

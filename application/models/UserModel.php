@@ -119,4 +119,14 @@ class UserModel extends CI_Model
     {
         $this->db->delete('pengguna_aplikasi', ['id_pengguna' => $id]);
     }
+
+    /**
+     * Function prosesUpdatePassword digunakan untuk mengupdate password user yang ada di database
+     */
+    public function prosesUpdatePassword($password, $email)
+    {
+        $this->db->set('password', $password);
+        $this->db->where('email', $email);
+        $this->db->update('user');
+    }
 }
