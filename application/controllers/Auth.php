@@ -60,7 +60,8 @@ class Auth extends CI_Controller
                         'notelp' => $user['notelp'],
                         'email' => $user['email'],
                         'status' => $user['status'],
-                        'role_id' => $user['role_id']
+                        'role_id' => $user['role_id'],
+                        'id_user' => $user['id_user']
                     ];
                     $this->session->set_userdata('datauser', $data);
 

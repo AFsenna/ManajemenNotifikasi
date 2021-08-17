@@ -3,6 +3,11 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Profile</h1>
+    <?= form_error('namalengkap', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('username', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('email', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('phone', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= $this->session->flashdata('message'); ?>
     <div class="row">
         <div class="col-lg-6">
             <div class="card shadow mb-4">
@@ -56,7 +61,7 @@
                     <center>
                         <img class="img-profile rounded-circle mb-2" src="<?= base_url('assets/') ?>img/undraw_Coding_re_iv62.png" style="max-width: 300px; max-height:300px">
                     </center>
-                    <table class="table table-bordered" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -64,14 +69,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Cabriz</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Na'est</td>
-                            </tr>
+                            <?php $no = 1;
+                            foreach ($aplikasi as $app) : ?>
+                                <tr>
+                                    <td><?= $no ?></td>
+                                    <td><?= $app['nama_aplikasi'] ?></td>
+                                </tr>
+                            <?php $no++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -92,19 +97,19 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User') ?>" method="POST">
+            <form action="<?= base_url('User/editProfile') ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="namalengkap" name="namalengkap" placeholder="Nama Lengkap" value="">
+                        <input type="text" class="form-control form-control-user" id="namalengkap" name="namalengkap" placeholder="Nama Lengkap" value="<?= $nama ?>">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="Username" value="">
+                        <input type="text" class="form-control form-control-user" id="username" name="username" placeholder="Username" value="<?= $username ?>">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="">
+                        <input type="email" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= $email ?>">
                     </div>
                     <div class="form-group">
-                        <input type="tel" class="form-control form-control-user" id="phone" name="phone" placeholder="Nomor Telepon" value="">
+                        <input type="tel" class="form-control form-control-user" id="phone" name="phone" placeholder="Nomor Telepon" value="<?= $notelp ?>">
                     </div>
                 </div>
                 <div class="modal-footer">

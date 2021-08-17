@@ -78,14 +78,12 @@
                 <div id="penggunaAplikasi" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
-                        <a class="collapse-item" href="<?= base_url('User/pengguna/Cabriz') ?>">
-                            <i class="fa fa-fw fa-clone mr-2"></i>
-                            Cabriz
-                        </a>
-                        <a class="collapse-item" href="<?= base_url('User/pengguna/Naest') ?>">
-                            <i class="fa fa-fw fa-clone mr-2"></i>
-                            Na'est
-                        </a>
+                        <?php foreach ($aplikasi as $app) : ?>
+                            <a class="collapse-item" href="<?= base_url('User/pengguna/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                                <i class="fa fa-fw fa-clone mr-2"></i>
+                                <?= $app['nama_aplikasi'] ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </li>
@@ -99,14 +97,12 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
-                        <a class="collapse-item" href="<?= base_url('User/notifikasi/Cabriz') ?>">
-                            <i class="fa fa-fw fa-clone mr-2"></i>
-                            Cabriz
-                        </a>
-                        <a class="collapse-item" href="<?= base_url('User/notifikasi/Naest') ?>">
-                            <i class="fa fa-fw fa-clone mr-2"></i>
-                            Na'est
-                        </a>
+                        <?php foreach ($aplikasi as $app) : ?>
+                            <a class="collapse-item" href="<?= base_url('User/notifikasi/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                                <i class="fa fa-fw fa-clone mr-2"></i>
+                                <?= $app['nama_aplikasi'] ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </li>
