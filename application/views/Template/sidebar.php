@@ -35,6 +35,14 @@
                     <span>User</span>
                 </a>
             </li>
+
+            <!-- Nav Item - aplikasi -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('Admin/aplikasi') ?>">
+                    <i class="far fa-fw fa-window-restore"></i>
+                    <span>Aplikasi</span>
+                </a>
+            </li>
         <?php endif; ?>
 
         <?php if ($role_id == 2) : ?>

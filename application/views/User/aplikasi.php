@@ -3,14 +3,16 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Aplikasi</h1>
-    <div class="mb-3">
-        <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newAplikasi">
-            <span class="icon text-white-50">
-                <i class="fas fa-plus"></i>
-            </span>
-            <span class="text">Tambah Aplikasi</span>
-        </button>
-    </div>
+    <?php if ($role_id == 2) : ?>
+        <div class="mb-3">
+            <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newAplikasi">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Tambah Aplikasi</span>
+            </button>
+        </div>
+    <?php endif; ?>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -24,45 +26,31 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Aplikasi</th>
-                            <th style="max-width: 300px;">Aksi</th>
+                            <?php if ($role_id == 2) : ?>
+                                <th style="max-width: 300px;">Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
                             <td>Cabriz</td>
-                            <td>
-                                <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </button>
-                                <a href="#" class="btn btn-danger btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Hapus</span>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Na'est</td>
-                            <td>
-                                <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </button>
-                                <a href="#" class="btn btn-danger btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Hapus</span>
-                                </a>
-                            </td>
+                            <?php if ($role_id == 2) : ?>
+                                <td>
+                                    <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-fw fa-edit"></i>
+                                        </span>
+                                        <span class="text">Edit</span>
+                                    </button>
+                                    <a href="" class="btn btn-danger btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-fw fa-trash"></i>
+                                        </span>
+                                        <span class="text">Hapus</span>
+                                    </a>
+                                </td>
+                            <?php endif; ?>
                         </tr>
                     </tbody>
                 </table>

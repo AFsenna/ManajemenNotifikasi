@@ -8,16 +8,7 @@ class AuthModel extends CI_Model
      */
     public function login($username)
     {
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('username', $username);
-        $this->db->limit(1);
-        $query = $this->db->get();
-        if ($query->num_rows() == 1) {
-            return $query->result();
-        } else {
-            return false;
-        }
+        return $this->db->get_where('user', ['username' => $username])->row_array();
     }
 
     /**
@@ -42,15 +33,8 @@ class AuthModel extends CI_Model
      */
     public function getUser($email)
     {
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('email', $email);
-        $query = $this->db->get();
-        if ($query->num_rows() == 1) {
-            return $query->result();
-        } else {
-            return false;
-        }
+        $query = $this->db->get_where('user', ['email' => $email]);
+        return $query->result_array();
     }
 
     /**
@@ -59,16 +43,13 @@ class AuthModel extends CI_Model
      */
     public function cekUser($email)
     {
-        $this->db->select('*');
-        $this->db->from('user');
-        $this->db->where('email', $email);
-        $this->db->where('status', 1);
-        $query = $this->db->get();
-        if ($query->num_rows() == 1) {
-            return $query->result();
-        } else {
-            return false;
-        }
+        $where = [
+            'email' => $email,
+            'status' => 1
+        ];
+
+        $query = $this->db->get_where('user', $where);
+        return $query->result_array();
     }
 
     /**
@@ -77,15 +58,7 @@ class AuthModel extends CI_Model
      */
     public function getToken($token)
     {
-        $this->db->select('*');
-        $this->db->from('token');
-        $this->db->where('token', $token);
-        $query = $this->db->get();
-        if ($query->num_rows() == 1) {
-            return $query->row_array();
-        } else {
-            return false;
-        }
+        return $this->db->get_where('token', ['token' => $token])->row_array();
     }
 
     /**
@@ -94,15 +67,8 @@ class AuthModel extends CI_Model
      */
     public function getTokenbytk($token)
     {
-        $this->db->select('*');
-        $this->db->from('token');
-        $this->db->where('token', $token);
-        $query = $this->db->get();
-        if ($query->num_rows() == 1) {
-            return $query->row_array();
-        } else {
-            return false;
-        }
+        $query = $this->db->get_where('user', ['token' => $token]);
+        return $query->result_array();
     }
     /**
      * Function getToken2 digunakan untuk mendapatkan data token berdasarkan email yang dikirimkan
@@ -110,15 +76,7 @@ class AuthModel extends CI_Model
      */
     public function getTokenbyem($email)
     {
-        $this->db->select('*');
-        $this->db->from('token');
-        $this->db->where('email', $email);
-        $query = $this->db->get();
-        if ($query->num_rows() >= 1) {
-            return $query->result();
-        } else {
-            return false;
-        }
+        return $this->db->get_where('token', ['email' => $email])->row_array();
     }
 
     /**

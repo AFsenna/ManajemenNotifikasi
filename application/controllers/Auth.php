@@ -51,48 +51,44 @@ class Auth extends CI_Controller
         } else {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
-            $result = $this->AuthModel->login($username);
-            if ($result) {
-                foreach ($result as $row) {
+            $user = $this->AuthModel->login($username);
+            if ($user) {
+                if ($user['status'] == 1) {
                     $data = [
-                        'nama_lengkap' => ucwords($row->nama_lengkap),
-                        'username' => ucfirst($row->username),
-                        'notelp' => $row->notelp,
-                        'email' => $row->email,
-                        'status' => $row->status,
-                        'role_id' => $row->role_id,
-                        'password' => $row->password
+                        'nama_lengkap' => ucwords($user['nama_lengkap']),
+                        'username' => ucfirst($user['username']),
+                        'notelp' => $user['notelp'],
+                        'email' => $user['email'],
+                        'status' => $user['status'],
+                        'role_id' => $user['role_id']
                     ];
                     $this->session->set_userdata('datauser', $data);
-                }
-                $session_data = $this->session->userdata('datauser');
 
-                if (password_verify($password, $session_data['password'])) {
-                    if ($session_data['role_id'] == 1) {
-                        redirect('Admin');
-                    } else if ($session_data['role_id'] == 2) {
-                        if ($session_data['status'] == 1) {
+                    if (password_verify($password, $user['password'])) {
+                        if ($user['role_id'] == 1) {
+                            redirect('Admin');
+                        } else if ($user['role_id'] == 2) {
                             redirect('User');
-                        } else {
-                            $this->session->set_flashdata('message', '
-                            <div class="alert alert-danger" role="alert">
-                                This account has not been activated! please check your email.
-                            </div>');
-                            redirect('Auth');
                         }
+                    } else {
+                        $this->session->set_flashdata('message', '
+                        <div class="alert alert-danger" role="alert">
+                        Wrong password!
+                        </div>');
+                        redirect('Auth');
                     }
                 } else {
                     $this->session->set_flashdata('message', '
                     <div class="alert alert-danger" role="alert">
-                        Wrong password!
+                        This account has not been activated! please check your email.
                     </div>');
                     redirect('Auth');
                 }
             } else {
                 $this->session->set_flashdata('message', '
-                <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger" role="alert">
                     Account is not registered!
-                </div>');
+                    </div>');
                 redirect('Auth');
             }
         }
@@ -393,10 +389,10 @@ class Auth extends CI_Controller
     {
         $email = $this->input->get('email');
         $token = $this->input->get('token');
-        $user = $this->AuthModel->getTokenbyem($email);
+        $user = $this->AuthModel->getTokenbytk($token);
 
         if ($user) {
-            $user_token = $this->AuthModel->getTokenbytk($token);
+            $user_token = $this->AuthModel->getTokenbyem($email);
 
             if ($user_token) {
                 if (time() - $user_token['date'] < (60 * 60 * 24)) {
@@ -410,14 +406,14 @@ class Auth extends CI_Controller
             } else {
                 $this->session->set_flashdata('message', '
                 <div class="alert alert-danger" role="alert">
-                 Reset password failed! Wrong token.
+                 Reset password failed! Wrong email.
                 </div>');
                 redirect('Auth');
             }
         } else {
             $this->session->set_flashdata('message', '
                 <div class="alert alert-danger" role="alert">
-                 Reset password failed! Wrong email.
+                 Reset password failed! Wrong token.
                 </div>');
             redirect('Auth');
         }

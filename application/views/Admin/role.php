@@ -3,6 +3,8 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Role</h1>
+    <?= form_error('role', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= $this->session->flashdata('message'); ?>
     <div class="mb-3">
         <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newRole">
             <span class="icon text-white-50">
@@ -28,42 +30,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Admin</td>
-                            <td>
-                                <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editRole">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </button>
-                                <a href="#" class="btn btn-danger btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Hapus</span>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>User</td>
-                            <td>
-                                <button href="#" class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editRole">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                    <span class="text">Edit</span>
-                                </button>
-                                <a href="#" class="btn btn-danger btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                    <span class="text">Hapus</span>
-                                </a>
-                            </td>
-                        </tr>
+                        <?php $no = 1;
+                        foreach ($roles as $row) :
+                        ?>
+                            <tr>
+                                <td><?= $no ?></td>
+                                <td><?= ucfirst($row['nama']) ?></td>
+                                <td>
+                                    <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editRole<?= $row['id_role'] ?>">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-fw fa-edit"></i>
+                                        </span>
+                                        <span class="text">Edit</span>
+                                    </button>
+                                    <a href="<?= base_url('Admin/deleteRole/' . $row['id_role']) ?>" class="btn btn-danger btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-fw fa-trash"></i>
+                                        </span>
+                                        <span class="text">Hapus</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php $no++;
+                        endforeach;
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -82,7 +72,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('Admin/role') ?>" method="POST">
+            <form action="<?= base_url('Admin/storeRole') ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" name="role" class="form-control" id="role" placeholder="Nama Role">
@@ -99,27 +89,29 @@
 <!-- endmodal -->
 
 <!-- Modal edit role-->
-<div class="modal fade" id="editRole" data-backdrop="static" tabindex="-1" aria-labelledby="editRoleLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editRoleLabel">Edit Role</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('Admin/role') ?>" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" name="role" class="form-control" id="newrole" placeholder="Nama Role" value="Admin">
+<?php foreach ($roles as $row) : ?>
+    <div class="modal fade" id="editRole<?= $row['id_role'] ?>" data-backdrop="static" tabindex="-1" aria-labelledby="editRoleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRoleLabel">Edit Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= base_url('Admin/updateRole/') . $row['id_role'] ?>" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" name="role" class="form-control" id="newrole" placeholder="Nama Role" value="<?= ucfirst($row['nama']) ?>">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+<?php endforeach; ?>
 <!-- endmodal -->
