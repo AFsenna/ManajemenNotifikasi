@@ -134,11 +134,13 @@ class Admin extends CI_Controller
 
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
+        $data['dataUser'] = $this->AdminModel->getUser();
+        $data['aplikasi'] = $this->AdminModel->AplikasiUser();
 
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
-        $this->load->view('Admin/user');
+        $this->load->view('Admin/user', $data);
         $this->load->view('Template/footer');
     }
 

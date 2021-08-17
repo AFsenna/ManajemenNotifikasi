@@ -43,4 +43,25 @@ class AdminModel extends CI_Model
     {
         $this->db->delete('role', ['id_role' => $id]);
     }
+
+    /**
+     * Function getUser digunakan untuk mendapatkan data user yang aktif dan memiliki role user
+     */
+    public function getUser()
+    {
+        $where = [
+            'role_id' => 2,
+            'status' => 1
+        ];
+        $query = $this->db->get_where('user', $where);
+        return $query->result_array();
+    }
+
+    /**
+     * Function AplikasiUser digunakan untuk mendapatkan data aplikasi
+     */
+    public function AplikasiUser()
+    {
+        return $this->db->get('aplikasi')->result_array();
+    }
 }
