@@ -121,6 +121,15 @@ class UserModel extends CI_Model
     }
 
     /**
+     * Function getPilihPengguna digunakan untuk memilih pengguna berdasarkan idaplikasi
+     */
+    public function getPilihPengguna($idAplikasi)
+    {
+        $query = $this->db->get_where('pengguna_aplikasi', ['aplikasi_id' => $idAplikasi]);
+        return $query->result_array();
+    }
+
+    /**
      * Function prosesUpdatePassword digunakan untuk mengupdate password user yang ada di database
      */
     public function prosesUpdatePassword($password, $email)
@@ -128,5 +137,82 @@ class UserModel extends CI_Model
         $this->db->set('password', $password);
         $this->db->where('email', $email);
         $this->db->update('user');
+    }
+
+    /**
+     * Function storeNotifikasi digunakan untuk menyimpan notifikasi di database
+     * pada tabel notifikasi dan detail_notifikasi
+     */
+    public function storeNotifikasi($data, $id)
+    {
+        $judul = $data['judul'];
+        $isinotifikasi = $data['isinotif'];
+        $isi = [
+            'judul' => $judul,
+            'isi' => $isinotifikasi,
+            'status' => 0,
+            'aplikasi_id' => $id
+        ];
+        $this->db->insert('notifikasi', $isi);
+        $idNotif = $this->db->insert_id();
+        foreach ($data['penerima'] as $row) {
+            $this->db->insert('detail_notifikasi', [
+                'pengguna_id' => $row,
+                'notifikasi_id' => $idNotif
+            ]);
+        }
+    }
+
+    /**
+     * Function ini digunakan untuk mendapatkan data notifikasi berdasarkan idaplikasi yang diinginkan
+     */
+    public function getNotifikasi($idAplikasi)
+    {
+        $query = $this->db->get_where('notifikasi', ['aplikasi_id' => $idAplikasi]);
+        return $query->result_array();
+    }
+
+    /**
+     * Function ini digunakan untuk mendapatkan data penerima dari notifikasi
+     */
+    public function getPenerima()
+    {
+        $this->db->select('pengguna_aplikasi.*');
+        $this->db->select('detail_notifikasi.*');
+        $this->db->from('detail_notifikasi');
+        $this->db->join('pengguna_aplikasi', 'detail_notifikasi.pengguna_id = pengguna_aplikasi.id_pengguna');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    /**
+     * Function ini digunakan untuk mengupdate data notifikasi yang ada di database
+     */
+    public function updateNotifikasi($data)
+    {
+        $idNotif = $data['idnotif'];
+        $judul = $data['judul'];
+        $isi = $data['isinotif'];
+        $set = [
+            'judul' => $judul,
+            'isi' => $isi,
+        ];
+        $this->db->where('id_notifikasi', $idNotif);
+        $this->db->update('notifikasi', $set);
+        $this->db->delete('detail_notifikasi', ['notifikasi_id' => $idNotif]);
+        foreach ($data['penerima'] as $row) {
+            $this->db->insert('detail_notifikasi', [
+                'pengguna_id' => $row,
+                'notifikasi_id' => $idNotif
+            ]);
+        }
+    }
+
+    /**
+     * Function ini digunakan untuk menghapus data notifikasi di database
+     */
+    public function prosesDeleteNotifikasi($id)
+    {
+        $this->db->delete('notifikasi', ['id_notifikasi' => $id]);
     }
 }

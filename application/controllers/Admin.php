@@ -29,7 +29,6 @@ class Admin extends CI_Controller
     public function index()
     {
         $data['title'] = 'Dashboard';
-
         $session_data = $this->session->userdata('datauser');
 
         $data['role_id'] = $session_data['role_id'];
@@ -155,7 +154,7 @@ class Admin extends CI_Controller
 
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
-        $data['aplikasi'] = $this->AdminModel->getAplikasi();
+        $data['allApp'] = $this->AdminModel->getAplikasi();
 
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);

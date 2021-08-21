@@ -36,7 +36,7 @@
                                     <input type="password" class="form-control form-control-user" id="password2" name="password2" placeholder="Repeat Password">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
+                            <button type="submit" class="btn btn-primary btn-user btn-block" id="btnRegister">
                                 Register Account
                             </button>
                         </form>
@@ -54,3 +54,17 @@
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+    $('#btnRegister').click(function() {
+        Swal.fire({
+            title: 'Proses create account',
+            text: 'The system will send you an email',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            onOpen: () => {
+                Swal.showLoading();
+            }
+        })
+    });
+</script>

@@ -5,6 +5,10 @@
  */
 
 /**
+ * Pada notifikasi status 0 untuk belum dikirim dan 1 apabila sudah dikirimkan
+ */
+
+/**
  * defined('BASEPATH') or exit('No direct script access allowed');
  * Berfungsi untuk memproteksi agar script yang kita buat tidak dapat diakses secara langsung 
  * dan harus melalui www.namaweb.com/controller
@@ -329,20 +333,92 @@ class User extends CI_Controller
     /**
      * Function notifikasi digunakan untuk menuju tampilan notifikasi
      */
-    public function notifikasi($namaAplikasi, $id)
+    public function notifikasi($namaAplikasi, $idAplikasi)
     {
         $session_data = $this->session->userdata('datauser');
+
         $data['title'] = "Notifikasi Milik $namaAplikasi";
         $data['namaAplikasi'] = $namaAplikasi;
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
+        $data['id_aplikasi'] = $idAplikasi;
+
+        $data['notifikasi'] = $this->UserModel->getNotifikasi($idAplikasi);
+        $data['pengguna'] = $this->UserModel->getPilihPengguna($idAplikasi);
         $data['aplikasi'] = $this->UserModel->myAplikasi($session_data['id_user']);
+        $data['penerima'] = $this->UserModel->getPenerima();
 
         $this->load->view('Template/header', $data);
         $this->load->view('Template/sidebar', $data);
         $this->load->view('Template/topbar', $data);
         $this->load->view('User/notifikasi', $data);
         $this->load->view('Template/footer');
+    }
+
+    /**
+     * Function tambahNotifikasi digunakan untuk menyimpan data notifikasi
+     */
+    public function tambahNotifikasi($namaAplikasi, $id)
+    {
+        $this->form_validation->set_rules('judul', 'Judul', 'required|trim');
+        $this->form_validation->set_rules('isinotif', 'IsiNotif', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->notifikasi($namaAplikasi, $id);
+        } else {
+            if (!$this->UserModel->storeNotifikasi($this->input->post(), $id)) {
+                $this->session->set_flashdata('message', '
+                <div class="alert alert-success" role="alert">
+                    New Notification added!
+                </div>');
+                redirect('User/notifikasi/' . $namaAplikasi . '/' . $id);
+            } else {
+                $this->session->set_flashdata('message', '
+                <div class="alert alert-success" role="alert">
+                    New Notification failed to added!
+                </div>');
+                redirect('User/notifikasi/' . $namaAplikasi . '/' . $id);
+            }
+        }
+    }
+
+    /**
+     * Function editNotifikasi digunakan untuk mengubah data notifikasi yang sudah ada
+     */
+    public function editNotifikasi($namaAplikasi, $idAplikasi)
+    {
+        $this->form_validation->set_rules('judul', 'Title', 'required|trim');
+        $this->form_validation->set_rules('isinotif', 'IsiNotif', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->notifikasi($namaAplikasi, $idAplikasi);
+        } else {
+            $this->UserModel->updateNotifikasi($this->input->post());
+            $this->session->set_flashdata('message', '
+                <div class="alert alert-success" role="alert">
+                    Notification updated!
+                </div>');
+            redirect('User/notifikasi/' . $namaAplikasi . '/' . $idAplikasi);
+
+            $this->session->set_flashdata('message', '
+                <div class="alert alert-success" role="alert">
+                    failed to edited!
+                </div>');
+            redirect('User/notifikasi/' . $namaAplikasi . '/' . $idAplikasi);
+        }
+    }
+
+    /**
+     * Function deleteNotifikasi digunakan untuk menghapus data notifikasi yang sudah ada
+     */
+    public function deleteNotifikasi($namaAplikasi, $idAplikasi, $id)
+    {
+        $this->UserModel->prosesDeleteNotifikasi($id);
+        $this->session->set_flashdata('message', '
+            <div class="alert alert-success" role="alert">
+                notification deleted!
+            </div>');
+        redirect('User/notifikasi/' . $namaAplikasi . '/' . $idAplikasi);
     }
 
     /**

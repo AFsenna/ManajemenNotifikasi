@@ -22,7 +22,7 @@
                                         <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Enter Email Address..." value="<?= set_value('email') ?>">
                                         <?= form_error('email', '<small class="text-danger pl-3">', '</small>') ?>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    <button type="submit" class="btn btn-primary btn-user btn-block" id="btnForgot">
                                         Reset Password
                                     </button>
                                 </form>
@@ -38,9 +38,20 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+    $('#btnForgot').click(function() {
+        Swal.fire({
+            title: 'Proses Forgot Password',
+            text: 'The system will send you an email',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            onOpen: () => {
+                Swal.showLoading();
+            }
+        })
+    });
+</script>

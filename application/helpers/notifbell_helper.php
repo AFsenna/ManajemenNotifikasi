@@ -13,3 +13,15 @@ function deleteTokenEXP()
         }
     }
 }
+
+function checkPengguna($id_pengguna, $id_notifikasi)
+{
+    $ci = get_instance();
+    $result = $ci->db->get_where('detail_notifikasi', [
+        'pengguna_id' => $id_pengguna,
+        'notifikasi_id' => $id_notifikasi
+    ]);
+    if ($result->row_array() > 0) {
+        return "checked='checked'";
+    }
+}

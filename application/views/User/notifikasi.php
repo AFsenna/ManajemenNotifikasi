@@ -11,6 +11,9 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Notifikasi</h1>
+    <?= form_error('judul', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('isinotif', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= $this->session->flashdata('message'); ?>
     <div class="mb-3">
         <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newNotifikasi">
             <span class="icon text-white-50">
@@ -33,57 +36,47 @@
                         <tr>
                             <th>No</th>
                             <th>Judul</th>
-                            <th>Isi Notifikasi</th>
+                            <th>Notifikasi</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Pergantian Nama Aplikasi</td>
-                            <td style="max-width: 300px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur inventore, laudantium tempore suscipit ipsa non error!</td>
-                            <td>
-                                <div class="badge badge-pill badge-success" style="max-width: 150px; font-size:15px">Terkirim</div>
-                            </td>
-                            <td>
-                                <button href="#" class="btn btn-warning" data-toggle="modal" data-target="#editNotifikasi">
-                                    <span class="icon text-white" data-toggle="tooltip" title="Edit Notifikasi">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                </button>
-                                <a href="#" class="btn btn-danger" data-toggle="tooltip" title="Delete Notifikasi">
-                                    <span class="icon text-white">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Pengumuman Gaji</td>
-                            <td style="max-width: 300px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem ad sequi dignissimos laudantium impedit aliquam. Ut, deserunt. Repudiandae, itaque, blanditiis hic enim doloribus ullam iure, dignissimos numquam quam iusto reiciendis?</td>
-                            <td>
-                                <div class="badge badge-pill badge-danger" style="max-width: 150px; font-size:15px">Belum Terkirim</div>
-                            </td>
-                            <td>
-                                <button href="#" class="btn btn-warning" data-toggle="modal" data-target="#editNotifikasi">
-                                    <span class="icon text-white" data-toggle="tooltip" title="Edit Notifikasi">
-                                        <i class="fas fa-fw fa-edit"></i>
-                                    </span>
-                                </button>
-                                <a href="#" class="btn btn-danger" data-toggle="tooltip" title="Delete Notifikasi">
-                                    <span class="icon text-white">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </span>
-                                </a>
-                                <button class="btn btn-info" data-toggle="tooltip" title="Kirimkan Notifikasi">
-                                    <span class="icon text-white">
-                                        <i class="fas fa-fw fa-share-square"></i>
-                                    </span>
-                                </button>
-                            </td>
-                        </tr>
+                        <?php $no = 1;
+                        foreach ($notifikasi as $row) : ?>
+                            <tr>
+                                <td><?= $no ?></td>
+                                <td><?= $row['judul'] ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#daftarPenerima<?= $row['id_notifikasi'] ?>">
+                                        <span class="icon text-white">
+                                            Detail
+                                        </span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="badge badge-pill badge-danger" style="max-width: 150px; font-size:15px">Belum Terkirim</div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editNotifikasi<?= $row['id_notifikasi'] ?>">
+                                        <span class="icon text-white" data-toggle="tooltip" title="Edit Notifikasi">
+                                            <i class="fas fa-fw fa-edit"></i>
+                                        </span>
+                                    </button>
+                                    <a href="<?= base_url('User/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
+                                        <span class="icon text-white">
+                                            <i class="fas fa-fw fa-trash"></i>
+                                        </span>
+                                    </a>
+                                    <button class="btn btn-sm btn-info mb-2" data-toggle="modal" data-target="#kirimkanModal<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
+                                        <span class="icon text-white">
+                                            <i class="fas fa-fw fa-share-square"></i> Kirimkan
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php $no++;
+                        endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -102,13 +95,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User/notifikasi') ?>" method="POST">
+            <form action="<?= base_url('User/tambahNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" name="judul" class="form-control" id="judul" placeholder="Judul Notifikasi">
                     </div>
                     <div class="form-group">
-                        <input type="textarea" id="summernote" name="isinotif" placeholder="Isi Notifikasi"></input>
+                        <textarea class="summernote" name="isinotif" placeholder="Isi Notifikasi" cols="30" rows="10"></textarea>
                     </div>
                     <div class="form-group">
                         <div class="card">
@@ -117,11 +110,8 @@
                                 <p>
                                 <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                 </p>
-                                <span class="text-dark mr-2"><input type="checkbox" id="check1" class="pl" value="Senna"> Senna </span>
-                                <span class="text-dark mr-2"><input type="checkbox" id="check2" class="pl" value="Michael"> Michael </span>
-                                <span class="text-dark mr-2"><input type="checkbox" id="check3" class="pl" value="Fadia"> Fadia </span>
-                                <span class="text-dark mr-2"><input type="checkbox" class="pl" id="check4" value="Corrine"> Corrine </span>
-                                <!-- <div class="btn btn-danger" onclick="getCheckboxValue()">hasil</div> -->
+                                <?php foreach ($pengguna as $row) : ?>
+                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= $row['nama_pengguna'] . ' (' . $row['email_pengguna'] . ')' ?> </span> <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -137,64 +127,156 @@
 <!-- endmodal -->
 
 <!-- Modal edit Notifikasi-->
-<div class="modal fade" id="editNotifikasi" data-backdrop="static" aria-labelledby="editNotifikasiLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editNotifikasiLabel">Edit Notifikasi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('User/notifikasi') ?>" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" name="judul" class="form-control" id="newjudul" placeholder="Judul Notifikasi">
-                    </div>
-                    <div class="form-group">
-                        <input type="textarea" id="summernoteedit" name="isinotif" placeholder="Isi Notifikasi"></input>
-                    </div>
-                    <div class="form-group">
-                        <div class="card">
-                            <div class="card-body text-dark">
-                                <h4> Penerima Notifikasi</h4>
-                                <p>
-                                <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
-                                </p>
-                                <span class="text-dark mr-2"><input type="checkbox" id="newcheck1" class="pl" value="Senna"> Senna </span>
-                                <span class="text-dark mr-2"><input type="checkbox" id="newcheck2" class="pl" value="Michael"> Michael </span>
-                                <span class="text-dark mr-2"><input type="checkbox" id="newcheck3" class="pl" value="Fadia"> Fadia </span>
-                                <span class="text-dark mr-2"><input type="checkbox" id="newcheck4" class="pl" value="Corrine"> Corrine </span>
-                                <!-- <div class="btn btn-danger" onclick="getCheckboxValue2()">hasil</div> -->
+<?php foreach ($notifikasi as $row) : ?>
+    <div class="modal fade" id="editNotifikasi<?= $row['id_notifikasi'] ?>" data-backdrop="static" aria-labelledby="editNotifikasiLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNotifikasiLabel">Edit Notifikasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= base_url('User/editNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="idnotif" class="form-control" value="<?= $row['id_notifikasi'] ?>">
+                        <div class="form-group">
+                            <input type="text" name="judul" class="form-control" id="newjudul" placeholder="Judul Notifikasi" value="<?= $row['judul'] ?>">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="summernote" name="isinotif" placeholder="Isi Notifikasi" cols="30" rows="10"><?= $row['isi'] ?></textarea>
+                        </div>
+                        <div class=" form-group">
+                            <div class="card">
+                                <div class="card-body text-dark">
+                                    <h4> Penerima Notifikasi</h4>
+                                    <p>
+                                    <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
+                                    </p>
+                                    <?php foreach ($pengguna as $us) : ?>
+                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" id="newcheck<?= $us['id_pengguna'] ?>" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= $us['nama_pengguna'] . ' (' . $us['email_pengguna'] . ')' ?> </span>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+<!-- endmodal -->
+
+<!-- Modal list aplikasi-->
+<?php $no = 1;
+foreach ($notifikasi as $row) : ?>
+    <div class="modal fade" id="daftarPenerima<?= $row['id_notifikasi'] ?>" tabindex="-1" aria-labelledby="daftarPenerimaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="daftarPenerimaLabel">Detail Notifikasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> </br>
+                </div>
+                <div class="modal-body">
+                    <h6 class="mb-3 text-danger">Notifikasi No : <?= $no ?></h6>
+                    <div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Isi Notifikasi
+                            </div>
+                            <div class="card-body">
+                                <?= $row['isi'] ?>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered tablepengguna" id="dataTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Pengguna</th>
+                                    <th>Email Pengguna</th>
+                                    <th>Notelp Pengguna</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $num = 1;
+                                foreach ($penerima as $us) :
+                                    if ($us['notifikasi_id'] == $row['id_notifikasi']) :
+                                ?>
+                                        <tr>
+                                            <td><?= $num ?></td>
+                                            <td><?= $us['nama_pengguna'] ?></td>
+                                            <td><?= $us['email_pengguna'] ?></td>
+                                            <td><?= $us['notelp_pengguna'] ?></td>
+                                        </tr>
+                                <?php
+                                        $num++;
+                                    endif;
+                                endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+<?php $no++;
+endforeach; ?>
 <!-- endmodal -->
 
+<!-- kirimkan Modal-->
+<?php foreach ($notifikasi as $row) : ?>
+    <div class="modal fade" id="kirimkanModal<?= $row['id_notifikasi'] ?>" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Verifikasi pengiriman notifikasi</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <strong>
+                        <h6 style="color:crimson">Judul Notifikasi : <?= $row['judul'] ?> </h6>
+                    </strong><br>
+                    Apakah anda yakin akan mengirim notifikasi ke penerima?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
-    $('#summernote').summernote({
-        placeholder: 'Isi Notifikasi',
-        tabsize: 2,
-        height: 120,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link']],
-            ['view', ['codeview', 'help']]
-        ]
-    });
-    $('#summernoteedit').summernote({
+    <?php foreach ($notifikasi as $row) : ?>
+        $('#btnKirim<?= $row['id_notifikasi'] ?>').click(function() {
+            Swal.fire({
+                title: 'Proses pengiriman notifikasi',
+                text: 'jangan close page ini sampai proses pengiriman selesai!!',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                onOpen: () => {
+                    Swal.showLoading();
+                }
+            })
+        });
+    <?php endforeach; ?>
+    $('.summernote').summernote({
         placeholder: 'Isi Notifikasi',
         tabsize: 2,
         height: 120,
@@ -224,59 +306,7 @@
         return clicked;
     }
 
-    function getCheckboxValue() {
-
-        var l1 = document.getElementById("check1");
-        var l2 = document.getElementById("check2");
-        var l3 = document.getElementById("check3");
-        var l4 = document.getElementById("check4");
-
-        var res = " ";
-
-        if (l1.checked == true) {
-            var pl1 = document.getElementById("check1").value;
-            res = res + pl1;
-        }
-        if (l2.checked == true) {
-            var pl2 = document.getElementById("check2").value;
-            res = res + " " + pl2;
-        }
-        if (l3.checked == true) {
-            var pl3 = document.getElementById("check3").value;
-            res = res + " " + pl3;
-        }
-        if (l4.checked == true) {
-            var pl4 = document.getElementById("check4").value;
-            res = res + " " + pl4;
-        }
-        console.log(res);
-    }
-
-    function getCheckboxValue2() {
-
-        var l1 = document.getElementById("newcheck1");
-        var l2 = document.getElementById("newcheck2");
-        var l3 = document.getElementById("newcheck3");
-        var l4 = document.getElementById("newcheck4");
-
-        var res = " ";
-
-        if (l1.checked == true) {
-            var pl1 = document.getElementById("newcheck1").value;
-            res = res + pl1;
-        }
-        if (l2.checked == true) {
-            var pl2 = document.getElementById("newcheck2").value;
-            res = res + " " + pl2;
-        }
-        if (l3.checked == true) {
-            var pl3 = document.getElementById("newcheck3").value;
-            res = res + " " + pl3;
-        }
-        if (l4.checked == true) {
-            var pl4 = document.getElementById("newcheck4").value;
-            res = res + " " + pl4;
-        }
-        console.log(res);
-    }
+    $(document).ready(function() {
+        $('.tablepengguna').dataTable();
+    })
 </script>
