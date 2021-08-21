@@ -215,4 +215,35 @@ class UserModel extends CI_Model
     {
         $this->db->delete('notifikasi', ['id_notifikasi' => $id]);
     }
+
+    public function getNotifikasibyid($idNotif)
+    {
+        return $this->db->get_where('notifikasi', ['id_notifikasi' => $idNotif])->row_array();
+    }
+
+    public function setStatusNotif($idNotif)
+    {
+        $this->db->set('status', 1);
+        $this->db->where('id_notifikasi', $idNotif);
+        $this->db->update('notifikasi');
+    }
+
+    public function getPenerimabynotif($idNotif)
+    {
+        $this->db->select('pengguna_aplikasi.*');
+        $this->db->select('detail_notifikasi.*');
+        $this->db->from('detail_notifikasi');
+        $this->db->where('notifikasi_id', $idNotif);
+        $this->db->join('pengguna_aplikasi', 'detail_notifikasi.pengguna_id = pengguna_aplikasi.id_pengguna');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function setStatusKirim($idNotif, $idPengguna)
+    {
+        $this->db->set('status', 1);
+        $this->db->where('notifikasi_id', $idNotif);
+        $this->db->where('pengguna_id', $idPengguna);
+        $this->db->update('detail_notifikasi');
+    }
 }

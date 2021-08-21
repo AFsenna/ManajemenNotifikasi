@@ -55,24 +55,36 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <div class="badge badge-pill badge-danger" style="max-width: 150px; font-size:15px">Belum Terkirim</div>
+                                    <?php if ($row['status'] == 0) : ?>
+                                        <div class="badge badge-pill badge-danger" style="max-width: 150px; font-size:15px">Belum Terkirim</div>
+                                    <?php elseif ($row['status'] == 1) : ?>
+                                        <div class="badge badge-pill badge-success" style="max-width: 150px; font-size:15px">Sudah Terkirim</div>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editNotifikasi<?= $row['id_notifikasi'] ?>">
-                                        <span class="icon text-white" data-toggle="tooltip" title="Edit Notifikasi">
-                                            <i class="fas fa-fw fa-edit"></i>
-                                        </span>
-                                    </button>
-                                    <a href="<?= base_url('User/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-fw fa-trash"></i>
-                                        </span>
-                                    </a>
-                                    <button class="btn btn-sm btn-info mb-2" data-toggle="modal" data-target="#kirimkanModal<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
-                                        <span class="icon text-white">
-                                            <i class="fas fa-fw fa-share-square"></i> Kirimkan
-                                        </span>
-                                    </button>
+                                    <?php if ($row['status'] == 0) : ?>
+                                        <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editNotifikasi<?= $row['id_notifikasi'] ?>">
+                                            <span class="icon text-white" data-toggle="tooltip" title="Edit Notifikasi">
+                                                <i class="fas fa-fw fa-edit"></i>
+                                            </span>
+                                        </button>
+                                        <a href="<?= base_url('User/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-fw fa-trash"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-info mb-2" data-toggle="modal" data-target="#kirimkanModal<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-fw fa-share-square"></i> Kirimkan
+                                            </span>
+                                        </button>
+                                    <?php elseif ($row['status'] == 1) : ?>
+                                        <button class="btn btn-sm mb-2" style="background-color:#f2781b" data-toggle="modal" data-target="#detailPengiriman<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-fw fa-eye"></i> Detail Pengiriman
+                                            </span>
+                                        </button>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php $no++;
@@ -201,9 +213,9 @@ foreach ($notifikasi as $row) : ?>
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Pengguna</th>
-                                    <th>Email Pengguna</th>
-                                    <th>Notelp Pengguna</th>
+                                    <th>Nama Penerima</th>
+                                    <th>Email Penerima</th>
+                                    <th>Notelp Penerima</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -254,12 +266,72 @@ endforeach; ?>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
+                    <a href="<?= base_url('User/kirimNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
                 </div>
             </div>
         </div>
     </div>
 <?php endforeach; ?>
+<!-- endmodal -->
+
+<!-- Modal list aplikasi-->
+<?php $no = 1;
+foreach ($notifikasi as $row) : ?>
+    <div class="modal fade" id="detailPengiriman<?= $row['id_notifikasi'] ?>" tabindex="-1" aria-labelledby="daftarPenerimaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="daftarPenerimaLabel">Detail Notifikasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> </br>
+                </div>
+                <div class="modal-body">
+                    <h6 class="mb-3 text-danger">Notifikasi No : <?= $no ?></h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered tablepengguna" id="dataTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Penerima</th>
+                                    <th>Email Penerima</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $num = 1;
+                                foreach ($penerima as $us) :
+                                    if ($us['notifikasi_id'] == $row['id_notifikasi']) :
+                                ?>
+                                        <tr>
+                                            <td><?= $num ?></td>
+                                            <td><?= $us['nama_pengguna'] ?></td>
+                                            <td><?= $us['email_pengguna'] ?></td>
+                                            <td>
+                                                <?php if ($us['status'] == 0) : ?>
+                                                    <div class="badge badge-pill badge-danger" style="max-width: 200px; font-size:15px">Email tidak ditemukan</div>
+                                                <?php elseif ($us['status'] == 1) : ?>
+                                                    <div class="badge badge-pill badge-success" style="max-width: 200px; font-size:15px">Berhasil Terkirim</div>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                <?php
+                                        $num++;
+                                    endif;
+                                endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php $no++;
+endforeach; ?>
+<!-- endmodal -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
@@ -267,7 +339,7 @@ endforeach; ?>
         $('#btnKirim<?= $row['id_notifikasi'] ?>').click(function() {
             Swal.fire({
                 title: 'Proses pengiriman notifikasi',
-                text: 'jangan close page ini sampai proses pengiriman selesai!!',
+                text: 'Jangan close page ini sampai proses pengiriman selesai!!</br>Pengiriman notifikasi membutuhkan waktu cukup lama mohon ditunggu.',
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 onOpen: () => {
