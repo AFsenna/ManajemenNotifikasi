@@ -35,6 +35,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tanggal Dibuat</th>
                             <th>Judul</th>
                             <th>Notifikasi</th>
                             <th>Status</th>
@@ -46,7 +47,8 @@
                         foreach ($notifikasi as $row) : ?>
                             <tr>
                                 <td><?= $no ?></td>
-                                <td><?= $row['judul'] ?></td>
+                                <td><?= date('d-m-Y', strtotime($row['tanggalDibuat'])); ?></td>
+                                <td><?= ucwords($row['judul']) ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#daftarPenerima<?= $row['id_notifikasi'] ?>">
                                         <span class="icon text-white">
@@ -110,6 +112,7 @@
             <form action="<?= base_url('User/tambahNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
+                        <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
                         <input type="text" name="judul" class="form-control" id="judul" placeholder="Judul Notifikasi">
                     </div>
                     <div class="form-group">
@@ -123,7 +126,7 @@
                                 <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                 </p>
                                 <?php foreach ($pengguna as $row) : ?>
-                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= $row['nama_pengguna'] . ' (' . $row['email_pengguna'] . ')' ?> </span> <?php endforeach; ?>
+                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= ucwords($row['nama_pengguna']) . '(' . $row['email_pengguna'] . ')' ?> </span> <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -151,6 +154,7 @@
                 </div>
                 <form action="<?= base_url('User/editNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                     <div class="modal-body">
+                        <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
                         <input type="hidden" name="idnotif" class="form-control" value="<?= $row['id_notifikasi'] ?>">
                         <div class="form-group">
                             <input type="text" name="judul" class="form-control" id="newjudul" placeholder="Judul Notifikasi" value="<?= $row['judul'] ?>">
@@ -166,7 +170,7 @@
                                     <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                     </p>
                                     <?php foreach ($pengguna as $us) : ?>
-                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" id="newcheck<?= $us['id_pengguna'] ?>" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= $us['nama_pengguna'] . ' (' . $us['email_pengguna'] . ')' ?> </span>
+                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" id="newcheck<?= $us['id_pengguna'] ?>" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= ucwords($us['nama_pengguna']) . '(' . $us['email_pengguna'] . ')' ?> </span>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -225,7 +229,7 @@ foreach ($notifikasi as $row) : ?>
                                 ?>
                                         <tr>
                                             <td><?= $num ?></td>
-                                            <td><?= $us['nama_pengguna'] ?></td>
+                                            <td><?= ucwords($us['nama_pengguna']) ?></td>
                                             <td><?= $us['email_pengguna'] ?></td>
                                             <td><?= $us['notelp_pengguna'] ?></td>
                                         </tr>

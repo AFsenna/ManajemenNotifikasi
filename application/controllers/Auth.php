@@ -471,4 +471,14 @@ class Auth extends CI_Controller
             </div>');
         $this->index();
     }
+
+    /**
+     * Function blocked digunakan untuk menampilkan halaman blocked access
+     */
+    public function blocked()
+    {
+        $session_data = $this->session->userdata('datauser');
+        $data['role'] = $session_data['role_id'];
+        $this->load->view('Auth/blocked', $data);
+    }
 }

@@ -147,11 +147,13 @@ class UserModel extends CI_Model
     {
         $judul = $data['judul'];
         $isinotifikasi = $data['isinotif'];
+        $tanggal = $data['tanggal'];
         $isi = [
             'judul' => $judul,
             'isi' => $isinotifikasi,
             'status' => 0,
-            'aplikasi_id' => $id
+            'aplikasi_id' => $id,
+            'tanggalDibuat' => $tanggal
         ];
         $this->db->insert('notifikasi', $isi);
         $idNotif = $this->db->insert_id();
@@ -192,10 +194,12 @@ class UserModel extends CI_Model
     {
         $idNotif = $data['idnotif'];
         $judul = $data['judul'];
+        $tanggal = $data['tanggal'];
         $isi = $data['isinotif'];
         $set = [
             'judul' => $judul,
             'isi' => $isi,
+            'tanggalDibuat' => $tanggal
         ];
         $this->db->where('id_notifikasi', $idNotif);
         $this->db->update('notifikasi', $set);

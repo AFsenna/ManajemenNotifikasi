@@ -14,6 +14,9 @@ function deleteTokenEXP()
     }
 }
 
+/**
+ * function checkpengguna digunakan untuk mendapatkan data penerima yang sudah di checklist
+ */
 function checkPengguna($id_pengguna, $id_notifikasi)
 {
     $ci = get_instance();
@@ -23,5 +26,35 @@ function checkPengguna($id_pengguna, $id_notifikasi)
     ]);
     if ($result->row_array() > 0) {
         return "checked='checked'";
+    }
+}
+
+/**
+ * Function cekAccessUser untuk mengecek apakah user sudah login saat membuka aplikasi
+ * dan mengecek apakah user memiliki role sebagai 'user'
+ */
+function cekAccessUser()
+{
+    $ci = get_instance();
+    $session_data = $ci->session->userdata('datauser');
+    if (!$ci->session->userdata('datauser')) {
+        redirect('Auth');
+    } else if ($session_data['role_id'] == 1) {
+        redirect('Auth/blocked');
+    }
+}
+
+/**
+ * Function cekAccessAdmin untuk mengecek apakah user sudah login saat membuka aplikasi
+ * dan mengecek apakah user memiliki role sebagai 'admin'
+ */
+function cekAccessAdmin()
+{
+    $ci = get_instance();
+    $session_data = $ci->session->userdata('datauser');
+    if (!$session_data) {
+        redirect('Auth');
+    } else if ($session_data['role_id'] == 2) {
+        redirect('Auth/blocked');
     }
 }

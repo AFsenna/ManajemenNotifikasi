@@ -20,6 +20,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->model('AdminModel');
         deleteTokenEXP();
+        cekAccessAdmin();
     }
 
     /**
@@ -30,6 +31,12 @@ class Admin extends CI_Controller
     {
         $data['title'] = 'Dashboard';
         $session_data = $this->session->userdata('datauser');
+
+        $data['jumlahAplikasi'] = $this->AdminModel->countApp();
+        $data['notifTerkirim'] = $this->AdminModel->countTerkirim();
+        $data['user'] = $this->AdminModel->countUser();
+        $data['blmTerkirim'] = $this->AdminModel->countBLMterkirim();
+        $data['notifikasi'] = $this->AdminModel->countNotifikasi();
 
         $data['role_id'] = $session_data['role_id'];
         $data['nama'] = $session_data['nama_lengkap'];
