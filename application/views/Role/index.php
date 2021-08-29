@@ -43,7 +43,7 @@
                                         </span>
                                         <span class="text">Edit</span>
                                     </button>
-                                    <a href="<?= base_url('Admin/deleteRole/' . $row['id_role']) ?>" class="btn btn-danger btn-icon-split">
+                                    <a href="<?= base_url('Role/deleteRole/' . $row['id_role']) ?>" class="btn btn-danger btn-icon-split">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-fw fa-trash"></i>
                                         </span>
@@ -72,7 +72,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('Admin/storeRole') ?>" method="POST">
+            <form action="<?= base_url('Role/storeRole') ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" name="role" class="form-control" id="role" placeholder="Nama Role">
@@ -99,7 +99,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('Admin/editRole/') . $row['id_role'] ?>" method="POST">
+                <form action="<?= base_url('Role/editRole/') . $row['id_role'] ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" name="role" class="form-control" id="newrole" placeholder="Nama Role" value="<?= ucfirst($row['nama']) ?>">

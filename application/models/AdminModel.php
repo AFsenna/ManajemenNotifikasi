@@ -2,13 +2,19 @@
 
 class AdminModel extends CI_Model
 {
-
+    /**
+     * Function countApp digunakan untuk menghitung banyaknya aplikasi yang terdaftar
+     */
     public function countApp()
     {
         $this->db->select('COALESCE(COUNT(aplikasi.nama_aplikasi),0) AS jumlah_aplikasi');
         $this->db->from('aplikasi');
         return $this->db->get()->row_array();
     }
+
+    /**
+     * Function countTerkirim digunakan untuk menghitung banyaknya notifikasi yang sudah terkirim
+     */
     public function countTerkirim()
     {
         $this->db->select('COALESCE(COUNT(notifikasi.judul),0) AS jumlah_notifikasi');
@@ -16,6 +22,10 @@ class AdminModel extends CI_Model
         $this->db->where('status', 1);
         return $this->db->get()->row_array();
     }
+
+    /**
+     * Function countUser digunakan untuk menghitung banyaknya user yang aktif
+     */
     public function countUser()
     {
         $this->db->select('COALESCE(COUNT(user.nama_lengkap),0) AS jumlah_user');
@@ -24,6 +34,10 @@ class AdminModel extends CI_Model
         $this->db->where('role_id', 2);
         return $this->db->get()->row_array();
     }
+
+    /**
+     * Function countBLMterkirim digunakan untuk menghitung banyaknya notifikasi yang belum terkirim
+     */
     public function countBLMterkirim()
     {
         $this->db->select('COALESCE(COUNT(notifikasi.judul),0) AS notifbelum');
@@ -31,6 +45,10 @@ class AdminModel extends CI_Model
         $this->db->where('status', 0);
         return $this->db->get()->row_array();
     }
+
+    /**
+     * Function countNotifikasi digunakan untuk menghitung banyaknya notifikasi yang terdaftar perbulan dan pada tahun ini
+     */
     public function countNotifikasi()
     {
         $i = 1;
@@ -41,49 +59,6 @@ class AdminModel extends CI_Model
             $i++;
         }
         return $hasil;
-        // return $this->db->get()->row_array();
-    }
-
-    /**
-     * Function getRole digunakan untuk mendapatkan seluruh data role
-     */
-    public function getRole()
-    {
-        return $this->db->get('role')->result_array();
-    }
-
-    /**
-     * Function storeRole digunakan untuk menyimpan role baru ke database
-     */
-    public function storeRole($role)
-    {
-        $this->db->insert('role', ['nama' => $role]);
-    }
-
-    /**
-     * Function updateRole digunakan untuk mengubah data role yang ada di database
-     */
-    public function updateRole($id, $role)
-    {
-        $this->db->set('nama', $role);
-        $this->db->where('id_role', $id);
-        $this->db->update('role');
-    }
-
-    /**
-     * Function cekRoleUser digunakan untuk mengecek apakah role sudah menjadi foreign key di tabel user
-     */
-    public function cekRoleUser($id)
-    {
-        return $this->db->get_where('user', ['role_id' => $id])->row_array();
-    }
-
-    /**
-     * Function prosesDeleteRole digunakan untuk menghapus role di database berdasarkan id yang dipilih
-     */
-    public function prosesDeleteRole($id)
-    {
-        $this->db->delete('role', ['id_role' => $id]);
     }
 
     /**
@@ -98,29 +73,4 @@ class AdminModel extends CI_Model
         $query = $this->db->get_where('user', $where);
         return $query->result_array();
     }
-
-    /**
-     * Function AplikasiUser digunakan untuk mendapatkan data aplikasi
-     */
-    public function AplikasiUser()
-    {
-        return $this->db->get('aplikasi')->result_array();
-    }
-
-    /**
-     * Function getAplikasi digunakan untuk mendapatkan data aplikasi dan jumlah pengguna aplikasi tersebut
-     */
-    public function getAplikasi()
-    {
-        $this->db->select('aplikasi.*');
-        $this->db->select('COALESCE(COUNT(pengguna_aplikasi.nama_pengguna),0) AS jumlah_pengguna');
-        $this->db->from('aplikasi');
-        $this->db->join('pengguna_aplikasi', 'aplikasi.id_aplikasi = pengguna_aplikasi.aplikasi_id', 'left');
-        $this->db->group_by('aplikasi.id_aplikasi');
-        $query = $this->db->get();
-        return $query->result_array();
-    }
 }
-// $tes = new AdminModel();
-// var_export($tes->countNotifikasi());
-// die();

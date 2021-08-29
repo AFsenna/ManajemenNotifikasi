@@ -58,3 +58,39 @@ function cekAccessAdmin()
         redirect('Auth/blocked');
     }
 }
+
+function defaultPage()
+{
+    $ci = get_instance();
+    $session_data = $ci->session->userdata('datauser');
+    if ($session_data['role_id'] == 1) {
+        redirect('admin');
+    } else if ($session_data['role_id'] == 2) {
+        redirect('user');
+    }
+}
+
+/**
+ * Function ini digunakan untuk menampilkan alert sukses
+ */
+function pesanSukses($data)
+{
+    return '<div class="alert alert-success" role="alert">' . $data . '</div>';
+}
+
+/**
+ * Function ini digunakan untuk menampilkan alert danger
+ */
+function pesanGagal($data)
+{
+    return '<div class="alert alert-danger" role="alert">' . $data . '</div>';
+}
+
+/**
+ * Function dd digunakan untuk var dump data / mengecek data
+ */
+function dd($data)
+{
+    echo "<pre>" . var_export($data) . "</pre>";
+    die();
+}

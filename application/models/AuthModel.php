@@ -12,22 +12,6 @@ class AuthModel extends CI_Model
     }
 
     /**
-     * Function prosesStore digunakan untuk menyimpan data user dan data token ketika register
-     */
-    public function prosesStore($data)
-    {
-        $this->db->insert('user', $data);
-    }
-
-    /**
-     * Function storeToken digunakan untuk menyimpan data token
-     */
-    public function storeToken($user_token)
-    {
-        $this->db->insert('token', $user_token);
-    }
-
-    /**
      * Function getUser digunakan untuk mendapatkan data user berdasarkan email yang dikirimkan 
      * melalui url yang didapat di email
      */
@@ -53,30 +37,15 @@ class AuthModel extends CI_Model
     }
 
     /**
-     * Function getToken digunakan untuk mendapatkan data token berdasarkan token yang dikirimkan
-     * melalui url yang didapat di email user
+     * Function prosesStore digunakan untuk menyimpan data user dan data token ketika register
      */
-    public function getToken($token)
+    public function prosesStore($data)
     {
-        return $this->db->get_where('token', ['token' => $token])->row_array();
-    }
-
-    /**
-     * Function getToken digunakan untuk mendapatkan data token berdasarkan token yang dikirimkan
-     * melalui url yang didapat di email user
-     */
-    public function getTokenbytk($token)
-    {
-        $query = $this->db->get_where('user', ['token' => $token]);
-        return $query->result_array();
-    }
-    /**
-     * Function getToken2 digunakan untuk mendapatkan data token berdasarkan email yang dikirimkan
-     * melalui url yang didapat di email user
-     */
-    public function getTokenbyem($email)
-    {
-        return $this->db->get_where('token', ['email' => $email])->row_array();
+        if ($this->db->insert('user', $data)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -86,15 +55,11 @@ class AuthModel extends CI_Model
     {
         $this->db->set('status', 1);
         $this->db->where('email', $email);
-        $this->db->update('user');
-    }
-
-    /**
-     * Function deleteToken digunakan untuk menghapus token yang sudah digunakan
-     */
-    public function deleteToken($email)
-    {
-        $this->db->delete('token', ['email' => $email]);
+        if ($this->db->update('user')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -102,7 +67,11 @@ class AuthModel extends CI_Model
      */
     public function deleteUser($email)
     {
-        $this->db->delete('user', ['email' => $email]);
+        if ($this->db->delete('user', ['email' => $email])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -112,6 +81,10 @@ class AuthModel extends CI_Model
     {
         $this->db->set('password', $password);
         $this->db->where('email', $email);
-        $this->db->update('user');
+        if ($this->db->update('user')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

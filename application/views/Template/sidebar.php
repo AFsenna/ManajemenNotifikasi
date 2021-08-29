@@ -22,7 +22,7 @@
 
             <!-- Nav Item - role -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('Admin/role') ?>">
+                <a class="nav-link" href="<?= base_url('Role') ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Role</span>
                 </a>
@@ -63,7 +63,7 @@
 
             <!-- Nav Item - aplikasi -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('User/aplikasi') ?>">
+                <a class="nav-link" href="<?= base_url('Aplikasi') ?>">
                     <i class="far fa-fw fa-window-restore"></i>
                     <span>Aplikasi</span>
                 </a>
@@ -79,7 +79,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
                         <?php foreach ($aplikasi as $app) : ?>
-                            <a class="collapse-item" href="<?= base_url('User/pengguna/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                            <a class="collapse-item" href="<?= base_url('PenggunaAplikasi/index/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
                                 <i class="fa fa-fw fa-clone mr-2"></i>
                                 <?= $app['nama_aplikasi'] ?>
                             </a>
@@ -98,7 +98,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
                         <?php foreach ($aplikasi as $app) : ?>
-                            <a class="collapse-item" href="<?= base_url('User/notifikasi/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                            <a class="collapse-item" href="<?= base_url('Notifikasi/index/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
                                 <i class="fa fa-fw fa-clone mr-2"></i>
                                 <?= $app['nama_aplikasi'] ?>
                             </a>

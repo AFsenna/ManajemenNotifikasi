@@ -54,13 +54,13 @@
                                 <?php elseif ($role_id == 2) : ?>
                                     <td>
                                         <?php if ($app['status'] == 1) : ?>
-                                            <a href="<?= base_url('User/nonAktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-danger btn-icon-split">
+                                            <a href="<?= base_url('Aplikasi/nonAktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-danger btn-icon-split">
                                                 <span class="text" data-toggle="tooltip" title="Non-Aktifkan Aplikasi">
                                                     <i class="fas fa-fw fa-times"></i>
                                                 </span>
                                             </a>
                                         <?php elseif ($app['status'] == 0) : ?>
-                                            <a href="<?= base_url('User/aktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-success btn-icon-split">
+                                            <a href="<?= base_url('Aplikasi/aktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-success btn-icon-split">
                                                 <span class="text" data-toggle="tooltip" title="Aktifkan Aplikasi">
                                                     <i class="fas fa-fw fa-check"></i>
                                                 </span>
@@ -72,7 +72,7 @@
                                             </span>
                                             <span class="text">Edit</span>
                                         </button>
-                                        <a href="<?= base_url('User/deleteAplikasi/' . $app['id_aplikasi']) ?>" class="btn btn-danger btn-icon-split">
+                                        <a href="<?= base_url('Aplikasi/deleteAplikasi/' . $app['id_aplikasi']) ?>" class="btn btn-danger btn-icon-split">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
@@ -101,7 +101,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User/addAplikasi') ?>" method="POST">
+            <form action="<?= base_url('Aplikasi/addAplikasi') ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" name="aplikasi" class="form-control" id="aplikasi" placeholder="Nama Aplikasi">
@@ -128,7 +128,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('User/editAplikasi/' . $app['id_aplikasi']) ?>" method="POST">
+                <form action="<?= base_url('Aplikasi/editAplikasi/' . $app['id_aplikasi']) ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" name="aplikasi" class="form-control" id="newaplikasi" placeholder="Nama Aplikasi" value="<?= ucfirst($app['nama_aplikasi']) ?>">

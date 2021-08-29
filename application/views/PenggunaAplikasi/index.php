@@ -49,7 +49,7 @@
                                         </span>
                                         <span class="text">Edit</span>
                                     </button>
-                                    <a href="<?= base_url('User/deletePengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" class="btn btn-danger btn-icon-split">
+                                    <a href="<?= base_url('PenggunaAplikasi/deletePengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" class="btn btn-danger btn-icon-split">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-fw fa-trash"></i>
                                         </span>
@@ -77,7 +77,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User/storePengguna/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+            <form action="<?= base_url('PenggunaAplikasi/storePengguna/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control form-control-user" id="nama" name="nama" placeholder="Nama" value="">
@@ -110,7 +110,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('User/editPengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" method="POST">
+                <form action="<?= base_url('PenggunaAplikasi/editPengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" class="form-control form-control-user" id="nama" name="nama" placeholder="Nama" value="<?= ucfirst($row['nama_pengguna']) ?>">

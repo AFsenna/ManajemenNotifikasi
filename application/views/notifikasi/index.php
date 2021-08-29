@@ -70,7 +70,7 @@
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </span>
                                         </button>
-                                        <a href="<?= base_url('User/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
+                                        <a href="<?= base_url('Notifikasi/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
                                             <span class="icon text-white">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
@@ -109,7 +109,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('User/tambahNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+            <form action="<?= base_url('Notifikasi/tambahNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
@@ -152,7 +152,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('User/editNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+                <form action="<?= base_url('Notifikasi/editNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
                         <input type="hidden" name="idnotif" class="form-control" value="<?= $row['id_notifikasi'] ?>">
@@ -270,7 +270,7 @@ endforeach; ?>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a href="<?= base_url('User/kirimNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
+                    <a href="<?= base_url('Notifikasi/kirimNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
                 </div>
             </div>
         </div>
@@ -291,7 +291,9 @@ foreach ($notifikasi as $row) : ?>
                     </button> </br>
                 </div>
                 <div class="modal-body">
-                    <h6 class="mb-3 text-danger">Notifikasi No : <?= $no ?></h6>
+                    <h6 class="mb-3 text-danger">Notifikasi No <?= $no ?></h6>
+                    <h6 class="mb-3 text-info">Tanggal dikirimkan : <?= date('d-m-Y', strtotime($row['tanggalTerkirim'])); ?></h6>
+                    <hr class="mb-5">
                     <div class="table-responsive">
                         <table class="table table-bordered tablepengguna" id="dataTable" width="100%">
                             <thead>
@@ -343,7 +345,7 @@ endforeach; ?>
         $('#btnKirim<?= $row['id_notifikasi'] ?>').click(function() {
             Swal.fire({
                 title: 'Proses pengiriman notifikasi',
-                text: 'Jangan close page ini sampai proses pengiriman selesai!!</br>Pengiriman notifikasi membutuhkan waktu cukup lama mohon ditunggu.',
+                text: 'Jangan close page ini sampai proses pengiriman selesai! Pengiriman notifikasi membutuhkan waktu cukup lama mohon ditunggu.',
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 onOpen: () => {
