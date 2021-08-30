@@ -20,7 +20,6 @@ class Role extends CI_Controller
 
         $this->load->model('RoleModel', 'role');
 
-        deleteTokenEXP();
         cekAccessAdmin();
     }
 
@@ -36,7 +35,7 @@ class Role extends CI_Controller
         $data['nama'] = $session_data['nama_lengkap'];
         $data['roles'] = $this->role->getRole();
 
-        $this->template->render('Role/index', $data);
+        $this->template->render('role/index', $data);
     }
 
     /**

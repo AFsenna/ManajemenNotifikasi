@@ -25,7 +25,6 @@ class Aplikasi extends CI_Controller
         $this->load->model('AplikasiModel', 'apk');
         $this->load->model('PenggunaAppModel', 'pengguna');
 
-        deleteTokenEXP();
         cekAccessUser();
     }
 
@@ -42,7 +41,7 @@ class Aplikasi extends CI_Controller
         $data['aplikasi'] = $this->apk->myAplikasi($session_data['id_user']);
         $data['allApp'] = $this->apk->getAplikasi($session_data['id_user']);
 
-        $this->template->render('Aplikasi/index', $data);
+        $this->template->render('aplikasi/index', $data);
     }
 
     /**

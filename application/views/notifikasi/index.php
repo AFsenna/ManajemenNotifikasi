@@ -75,15 +75,15 @@
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
                                         </a>
-                                        <button class="btn btn-sm btn-info mb-2" data-toggle="modal" data-target="#kirimkanModal<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
+                                        <button class="btn btn-sm btn-success mb-2" data-toggle="modal" data-target="#kirimkanModal<?= $row['id_notifikasi'] ?>">
                                             <span class="icon text-white">
                                                 <i class="fas fa-fw fa-share-square"></i> Kirimkan
                                             </span>
                                         </button>
                                     <?php elseif ($row['status'] == 1) : ?>
-                                        <button class="btn btn-sm mb-2" style="background-color:#f2781b" data-toggle="modal" data-target="#detailPengiriman<?= $row['id_notifikasi'] ?>" data-toggle=" tooltip" title="Kirimkan Notifikasi">
-                                            <span class="icon text-white">
-                                                <i class="fas fa-fw fa-eye"></i> Detail Pengiriman
+                                        <button class="btn btn-sm btn-info mb-2" data-toggle="modal" data-target="#detailPengiriman<?= $row['id_notifikasi'] ?>">
+                                            <span class="icon text-white" data-toggle="tooltip" title="Detail Pengiriman">
+                                                <i class="fas fa-fw fa-eye"></i>
                                             </span>
                                         </button>
                                     <?php endif; ?>
@@ -157,7 +157,7 @@
                         <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
                         <input type="hidden" name="idnotif" class="form-control" value="<?= $row['id_notifikasi'] ?>">
                         <div class="form-group">
-                            <input type="text" name="judul" class="form-control" id="newjudul" placeholder="Judul Notifikasi" value="<?= $row['judul'] ?>">
+                            <input type="text" name="judul" class="form-control" placeholder="Judul Notifikasi" value="<?= $row['judul'] ?>">
                         </div>
                         <div class="form-group">
                             <textarea class="summernote" name="isinotif" placeholder="Isi Notifikasi" cols="30" rows="10"><?= $row['isi'] ?></textarea>
@@ -170,7 +170,7 @@
                                     <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                     </p>
                                     <?php foreach ($pengguna as $us) : ?>
-                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" id="newcheck<?= $us['id_pengguna'] ?>" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= ucwords($us['nama_pengguna']) . '(' . $us['email_pengguna'] . ')' ?> </span>
+                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= ucwords($us['nama_pengguna']) . '(' . $us['email_pengguna'] . ')' ?> </span>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

@@ -3,16 +3,29 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Pengguna Aplikasi</h1>
+
     <?= form_error('nama', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= form_error('email', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= form_error('phone', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('filename', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('noIsi', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('noNama', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('noHP', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+    <?= form_error('noEmail', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= $this->session->flashdata('message'); ?>
+
     <div class="mb-3">
-        <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newPengguna">
+        <button class="btn btn-info btn-icon-split" data-toggle="modal" data-target="#newPengguna">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
             <span class="text">Tambah Pengguna</span>
+        </button>
+        <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#imporExcel">
+            <span class="icon text-white-50">
+                <i class="fas fa-file-excel"></i>
+            </span>
+            <span class="text">Impor Excel</span>
         </button>
     </div>
 
@@ -113,13 +126,13 @@
                 <form action="<?= base_url('PenggunaAplikasi/editPengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="nama" name="nama" placeholder="Nama" value="<?= ucfirst($row['nama_pengguna']) ?>">
+                            <input type="text" class="form-control form-control-user" name="nama" placeholder="Nama" value="<?= ucfirst($row['nama_pengguna']) ?>">
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= $row['email_pengguna'] ?>">
+                            <input type="email" class="form-control form-control-user" name="email" placeholder="Email" value="<?= $row['email_pengguna'] ?>">
                         </div>
                         <div class="form-group">
-                            <input type="tel" class="form-control form-control-user" id="phone" name="phone" placeholder="Nomor Telepon" value="<?= $row['notelp_pengguna'] ?>">
+                            <input type="tel" class="form-control form-control-user" name="phone" placeholder="Nomor Telepon" value="<?= $row['notelp_pengguna'] ?>">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -131,4 +144,52 @@
         </div>
     </div>
 <?php endforeach; ?>
+<!-- endmodal -->
+
+<!-- Modal impor excel-->
+<div class="modal fade" id="imporExcel" data-backdrop="static" tabindex="-1" aria-labelledby="imporExcelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imporExcelLabel">Impor Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?= form_open_multipart('PenggunaAplikasi/storeExcel/' . $namaAplikasi . '/' . $id_aplikasi); ?>
+            <!-- <form action="<?= base_url('PenggunaAplikasi/storeExcel/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST"> -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="berkas">File (.xlsx atau .csv) </label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="berkas" name="berkas">
+                        <label class="custom-file-label" for="berkas">Choose file</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="noIsi">Isi data dimulai dari baris ke </label>
+                    <input type="number" class="form-control form-control-user" id="noIsi" name="noIsi" value="2">
+                </div>
+                <div class="form-group">
+                    <label for="noNama">Kolom nama ada di </label>
+                    <input type="number" class="form-control form-control-user" id="noNama" name="noNama" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="noHP">Kolom notelp ada di </label>
+                    <input type="number" class="form-control form-control-user" id="noHP" name="noHP" value="2">
+                </div>
+                <div class="form-group">
+                    <label for="noEmail">Kolom email ada di </label>
+                    <input type="number" class="form-control form-control-user" id="noEmail" name="noEmail" value="3">
+                </div>
+                <h6 class="text-danger" style="font-weight: bold;">Silahkan download contoh file <a href="<?= base_url('assets\excel\contoh.xlsx') ?>" download>disini</a></h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Impor</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- endmodal -->

@@ -20,6 +20,15 @@
                 </a>
             </li>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Data Master
+            </div>
+
+
             <!-- Nav Item - role -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('Role') ?>">
@@ -105,6 +114,21 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Report Data
+            </div>
+
+            <!-- Nav Item - aplikasi -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('Report') ?>">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Report</span>
+                </a>
             </li>
         <?php endif; ?>
 

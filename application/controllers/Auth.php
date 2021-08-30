@@ -25,8 +25,6 @@ class Auth extends CI_Controller
 
         $this->load->model('AuthModel', 'auth');
         $this->load->model('TokenModel', 'token');
-
-        deleteTokenEXP();
     }
 
     /**
@@ -37,7 +35,7 @@ class Auth extends CI_Controller
         defaultPage();
         $data['title'] = 'Login';
 
-        $this->template->renderAuth('Auth/login', $data);
+        $this->template->renderAuth('auth/login', $data);
     }
 
     /**
@@ -99,7 +97,7 @@ class Auth extends CI_Controller
         defaultPage();
         $data['title'] = 'Register';
 
-        $this->template->renderAuth('Auth/register', $data);
+        $this->template->renderAuth('auth/register', $data);
     }
 
     /**
@@ -270,7 +268,7 @@ class Auth extends CI_Controller
         defaultPage();
         $data['title'] = 'Forgot Password';
 
-        $this->template->renderAuth('Auth/forgotpassword', $data);
+        $this->template->renderAuth('auth/forgotpassword', $data);
     }
 
     /**
@@ -325,7 +323,7 @@ class Auth extends CI_Controller
                     $this->session->set_userdata('reset_email', $email);
                     if ($this->token->deleteToken($token)) {
                         $data['title'] = 'Change Password';
-                        $this->template->renderAuth('Auth/changepassword', $data);
+                        $this->template->renderAuth('auth/changepassword', $data);
                     } else {
                         $this->session->set_flashdata('message', pesanGagal('Gagal delete token!'));
                         redirect('Auth');
@@ -359,7 +357,7 @@ class Auth extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Change Password';
-            $this->template->renderAuth('Auth/changepassword', $data);
+            $this->template->renderAuth('auth/changepassword', $data);
         } else {
             $password = password_hash($this->input->post('password1'), PASSWORD_DEFAULT);
             $email = $this->session->userdata('reset_email');

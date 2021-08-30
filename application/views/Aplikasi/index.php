@@ -67,7 +67,7 @@
                                             </a>
                                         <?php endif; ?>
                                         <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi<?= $app['id_aplikasi'] ?>">
-                                            <span class="icon text-white-50">
+                                            <span class="icon texat-white-50">
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </span>
                                             <span class="text">Edit</span>
@@ -131,7 +131,7 @@
                 <form action="<?= base_url('Aplikasi/editAplikasi/' . $app['id_aplikasi']) ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" name="aplikasi" class="form-control" id="newaplikasi" placeholder="Nama Aplikasi" value="<?= ucfirst($app['nama_aplikasi']) ?>">
+                            <input type="text" name="aplikasi" class="form-control" placeholder="Nama Aplikasi" value="<?= ucfirst($app['nama_aplikasi']) ?>">
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -24,7 +24,6 @@ class Admin extends CI_Controller
         $this->load->model('AdminModel', 'adm');
         $this->load->model('AplikasiModel', 'apk');
 
-        deleteTokenEXP();
         cekAccessAdmin();
     }
 
@@ -57,7 +56,7 @@ class Admin extends CI_Controller
         $data['dataUser'] = $this->adm->getUser();
         $data['aplikasi'] = $this->apk->getAll();
 
-        $this->template->render('Admin/user', $data);
+        $this->template->render('admin/user', $data);
     }
 
     /**
@@ -70,6 +69,6 @@ class Admin extends CI_Controller
         $data['nama'] = $this->session_data['nama_lengkap'];
         $data['allApp'] = $this->apk->getDetailAplikasi();
 
-        $this->template->render('Aplikasi/index', $data);
+        $this->template->render('aplikasi/index', $data);
     }
 }

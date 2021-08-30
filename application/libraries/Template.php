@@ -10,27 +10,20 @@ class Template
     function render($template = NULL, $data = NULL)
     {
         if ($template != NULL) {
-            $this->ci->load->view('Template/header', $data);
-            $this->ci->load->view('Template/sidebar', $data);
-            $this->ci->load->view('Template/topbar', $data);
+            $this->ci->load->view('template/header', $data);
+            $this->ci->load->view('template/sidebar', $data);
+            $this->ci->load->view('template/topbar', $data);
             $this->ci->load->view($template, $data);
-            $this->ci->load->view('Template/footer', $data);
+            $this->ci->load->view('template/footer', $data);
         }
     }
 
     function renderAuth($template = NULL, $data = NULL)
     {
         if ($template != NULL) {
-            $this->ci->load->view('Template/auth_header', $data);
+            $this->ci->load->view('template/auth_header', $data);
             $this->ci->load->view($template);
-            $this->ci->load->view('Template/auth_footer', $data);
-        }
-    }
-
-    function emailAuth($data = NULL)
-    {
-        if ($data != NULL) {
-            $this->ci->load->view('Auth/tampilanEmail', $data, TRUE);
+            $this->ci->load->view('template/auth_footer', $data);
         }
     }
 }

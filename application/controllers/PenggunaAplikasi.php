@@ -1,5 +1,9 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 /**
  * Pada pengunaAplikasi status 0 untuk hidden dan 1 apabila aktif
  */
@@ -20,9 +24,10 @@ class PenggunaAplikasi extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+
         $this->load->model('PenggunaAppModel', 'pengguna');
         $this->load->model('AplikasiModel', 'apk');
-        deleteTokenEXP();
+
         cekAccessUser();
     }
 
@@ -41,7 +46,7 @@ class PenggunaAplikasi extends CI_Controller
         $data['aplikasi'] = $this->apk->myAplikasi($session_data['id_user']);
         $data['pengguna'] = $this->pengguna->getPengguna($idAplikasi);
 
-        $this->template->render('PenggunaAplikasi/index', $data);
+        $this->template->render('penggunaAplikasi/index', $data);
     }
 
     /**
@@ -129,5 +134,93 @@ class PenggunaAplikasi extends CI_Controller
         }
 
         redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+    }
+
+    /**
+     * Function storeExcel digunakan untuk menyimpan data dari impor excel
+     */
+    public function storeExcel($namaAplikasi, $idAplikasi)
+    {
+        $this->form_validation->set_rules('noIsi', 'Kolom isi data', 'required|trim');
+        $this->form_validation->set_rules('noNama', 'Kolom nama', 'required|trim');
+        $this->form_validation->set_rules('noHP', 'Kolom nomor telepon', 'required|trim');
+        $this->form_validation->set_rules('noEmail', 'Kolom email', 'required|trim');
+
+        if ($this->form_validation->run() == false) {
+            $this->index($namaAplikasi, $idAplikasi);
+        } else {
+            $KolomIsi = $this->input->post('noIsi') - 1;
+            $KolomNama = $this->input->post('noNama') - 1;
+            $KolomHp = $this->input->post('noHP') - 1;
+            $KolomEmail = $this->input->post('noEmail') - 1;
+
+            /**
+             * menuliskan beberapa format file excel, 
+             * yang nantinya akan digunakan sebagai validasi format file yang didukung, 
+             * sebelum proses import data kedatabase dilakukan
+             */
+            $file_mimes = array('application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            /**
+             * memeriksa apakah memang ada file yang kita pilih saat proses import dilakukan, 
+             * serta format tipe file sesuai dengan yang telah kita tentukan pada array $file_mimes
+             */
+            if (isset($_FILES['berkas']['name']) && in_array($_FILES['berkas']['type'], $file_mimes)) {
+                /**
+                 * lakukan explode pada nama file excel, untuk mengetahui extention file yang kita pilih.
+                 */
+                $arr_file = explode('.', $_FILES['berkas']['name']);
+                $extension = end($arr_file);
+
+                /**
+                 * lakukan pengecekan jika file extention adalah csv maka akan dibuat object dengan class reader csv, 
+                 * tetapi jika tidak dibuatkan object dengan class reader xlsx
+                 */
+                if ('csv' == $extension) {
+                    $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                } else {
+                    $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                }
+
+                /**
+                 * load file excel yang kita upload dan disimpan didalam variabel $spreadsheet
+                 */
+                $spreadsheet = $reader->load($_FILES['berkas']['tmp_name']);
+
+                /**
+                 * membuat variabel $sheetData yang digunakan untuk menyimpan array, hasil konversi isi dari file excel, menjadi bentuk array.
+                 */
+                $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+                /**
+                 * kita lakukan perulangan dengan menggunakan for,
+                 * $i = kolomIsi-1 dikarenakan index array hasil konversi file excel dimulai dari index ke 0
+                 */
+                // dd($_FILES['berkas']['tmp_name']);
+                for ($i = $KolomIsi; $i < count($sheetData); $i++) {
+                    // echo $i;
+                    $nama = $sheetData[$i][$KolomNama];
+                    $nohp = $sheetData[$i][$KolomHp];
+                    $email = $sheetData[$i][$KolomEmail];
+
+                    if ($nama != NULL && $nohp != NULL && $email != NULL) {
+                        $data = array(
+                            'nama_pengguna' => $nama,
+                            'notelp_pengguna' => $nohp,
+                            'email_pengguna' => $email,
+                            'aplikasi_id' => $idAplikasi,
+                            'status_pengguna' => 1
+                        );
+
+                        if ($this->pengguna->prosesStorePengguna($data)) {
+                            $this->session->set_flashdata('message', pesanSukses('Pengguna aplikasi berhasil ditambahkan!'));
+                        } else {
+                            $this->session->set_flashdata('message', pesanGagal('Pengguna aplikasi gagal ditambahkan!'));
+                        }
+                    }
+                }
+                redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+            }
+        }
     }
 }

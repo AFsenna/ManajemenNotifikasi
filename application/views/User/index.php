@@ -3,6 +3,7 @@
 
     <!-- Page Heading -->
     <h1 class="h3 text-gray-800">Profile</h1>
+
     <?= form_error('namalengkap', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= form_error('username', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= form_error('email', '<div class="alert alert-danger" role="alert">', '</div>') ?>

@@ -25,7 +25,6 @@ class Notifikasi extends CI_Controller
         $this->load->model('AplikasiModel', 'apk');
         $this->load->model('PenggunaAppModel', 'pengguna');
 
-        deleteTokenEXP();
         cekAccessUser();
     }
 
@@ -46,7 +45,7 @@ class Notifikasi extends CI_Controller
         $data['aplikasi'] = $this->apk->myAplikasi($session_data['id_user']);
         $data['penerima'] = $this->notif->getPenerima();
 
-        $this->template->render('Notifikasi/index', $data);
+        $this->template->render('notifikasi/index', $data);
     }
 
     /**
