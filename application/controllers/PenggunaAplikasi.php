@@ -64,13 +64,14 @@ class PenggunaAplikasi extends CI_Controller
             $nama = $this->input->post('nama');
             $phone = $this->input->post('phone');
             $email = $this->input->post('email');
-
+            $tanggal = date('Y-m-d');
             $data = [
                 'nama_pengguna' => $nama,
                 'notelp_pengguna' => $phone,
                 'email_pengguna' => $email,
                 'aplikasi_id' => $idAplikasi,
-                'status_pengguna' => 1
+                'status_pengguna' => 1,
+                'tanggal_dibuat' => $tanggal
             ];
 
             if ($this->pengguna->prosesStorePengguna($data)) {
@@ -79,7 +80,7 @@ class PenggunaAplikasi extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Pengguna aplikasi gagal ditambahkan!'));
             }
 
-            redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+            redirect('penggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
         }
     }
 
@@ -98,10 +99,12 @@ class PenggunaAplikasi extends CI_Controller
             $nama = $this->input->post('nama');
             $phone = $this->input->post('phone');
             $email = $this->input->post('email');
+            $tanggal = date('Y-m-d');
             $set = [
                 'nama_pengguna' => $nama,
                 'notelp_pengguna' => $phone,
                 'email_pengguna' => $email,
+                'tanggal_dibuat' => $tanggal
             ];
 
             if ($this->pengguna->updatePengguna($idPengguna, $set)) {
@@ -109,7 +112,7 @@ class PenggunaAplikasi extends CI_Controller
             } else {
                 $this->session->set_flashdata('message', pesanSukses('Pengguna aplikasi gagal diupdate!'));
             }
-            redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+            redirect('penggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
         }
     }
 
@@ -133,7 +136,7 @@ class PenggunaAplikasi extends CI_Controller
             }
         }
 
-        redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+        redirect('penggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
     }
 
     /**
@@ -202,6 +205,7 @@ class PenggunaAplikasi extends CI_Controller
                     $nama = $sheetData[$i][$KolomNama];
                     $nohp = $sheetData[$i][$KolomHp];
                     $email = $sheetData[$i][$KolomEmail];
+                    $tanggal = date('Y-m-d');
 
                     if ($nama != NULL && $nohp != NULL && $email != NULL) {
                         $data = array(
@@ -209,7 +213,8 @@ class PenggunaAplikasi extends CI_Controller
                             'notelp_pengguna' => $nohp,
                             'email_pengguna' => $email,
                             'aplikasi_id' => $idAplikasi,
-                            'status_pengguna' => 1
+                            'status_pengguna' => 1,
+                            'tanggal_dibuat' => $tanggal
                         );
 
                         if ($this->pengguna->prosesStorePengguna($data)) {
@@ -219,7 +224,7 @@ class PenggunaAplikasi extends CI_Controller
                         }
                     }
                 }
-                redirect('PenggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+                redirect('penggunaAplikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
             }
         }
     }

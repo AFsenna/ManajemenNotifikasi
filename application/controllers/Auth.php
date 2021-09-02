@@ -70,21 +70,21 @@ class Auth extends CI_Controller
 
                     if (password_verify($password, $user['password'])) {
                         if ($user['role_id'] == 1) {
-                            redirect('Admin');
+                            redirect('admin');
                         } else if ($user['role_id'] == 2) {
-                            redirect('User');
+                            redirect('user');
                         }
                     } else {
                         $this->session->set_flashdata('message', pesanGagal('Password Salah!'));
-                        redirect('Auth');
+                        redirect('auth');
                     }
                 } else {
                     $this->session->set_flashdata('message', pesanGagal('Akun belum di aktifkan! silahkan cek email anda.'));
-                    redirect('Auth');
+                    redirect('auth');
                 }
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Akun belum terdaftar!'));
-                redirect('Auth');
+                redirect('auth');
             }
         }
     }
@@ -156,15 +156,18 @@ class Auth extends CI_Controller
 
             if ($this->auth->prosesStore($data)) {
                 if ($this->token->storeToken($user_token)) {
-                    $this->_sent_Email($token, 'verify', $email);
-                    $this->session->set_flashdata('message', pesanGagal('Akun telah didaftarkan. Silahkan cek email anda untuk aktivasi!'));
+                    if ($this->_sent_Email($token, 'verify', $email)) {
+                        $this->session->set_flashdata('message', pesanSukses('Akun telah didaftarkan. Silahkan cek email anda untuk aktivasi!'));
+                    } else {
+                        $this->session->set_flashdata('message', pesanSukses('Akun gagal didaftarkan!'));
+                    }
                 } else {
                     $this->session->set_flashdata('message', pesanGagal('Proses penyimpanan token gagal!'));
                 }
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Gagal mendaftarkan akun!'));
             }
-            redirect('Auth');
+            redirect('auth');
         }
     }
 
@@ -208,8 +211,7 @@ class Auth extends CI_Controller
         if ($this->email->send()) {
             return true;
         } else {
-            echo $this->email->print_debugger();
-            die();
+            return false;
         }
     }
 
@@ -237,7 +239,7 @@ class Auth extends CI_Controller
                     } else {
                         $this->session->set_flashdata('message', pesanGagal($email . ' Gagal update status akun!'));
                     }
-                    redirect('Auth');
+                    redirect('auth');
                 } else {
                     if ($this->auth->deleteUser($email)) {
                         if ($this->token->deleteToken($email)) {
@@ -248,15 +250,15 @@ class Auth extends CI_Controller
                     } else {
                         $this->session->set_flashdata('message', pesanGagal('User dengan email : ' . $email . ' gagal dihapus!'));
                     }
-                    redirect('Auth/register');
+                    redirect('auth/register');
                 }
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Aktivasi gagal! Token salah!'));
-                redirect('Auth');
+                redirect('auth');
             }
         } else {
             $this->session->set_flashdata('message', pesanGagal('Aktivasi gagal! Email salah!'));
-            redirect('Auth/register');
+            redirect('auth/register');
         }
     }
 
@@ -292,16 +294,19 @@ class Auth extends CI_Controller
                 ];
 
                 if ($this->token->storeToken($user_token)) {
-                    $this->_sent_Email($token, 'forgot', $email);
-                    $this->session->set_flashdata('message', pesanSukses('Silahkan cek email anda untuk reset password!'));
+                    if ($this->_sent_Email($token, 'forgot', $email)) {
+                        $this->session->set_flashdata('message', pesanSukses('Silahkan cek email anda untuk reset password!'));
+                    } else {
+                        $this->session->set_flashdata('message', pesanGagal('Email untuk reset password tidak terkirim!'));
+                    }
                 } else {
                     $this->session->set_flashdata('message', pesanGagal('Gagal reset password!'));
                 }
 
-                redirect('Auth');
+                redirect('auth');
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Email tidak terdaftar atau belum di aktivasi!'));
-                redirect('Auth/forgotpassword');
+                redirect('auth/forgotpassword');
             }
         }
     }
@@ -326,16 +331,16 @@ class Auth extends CI_Controller
                         $this->template->renderAuth('auth/changepassword', $data);
                     } else {
                         $this->session->set_flashdata('message', pesanGagal('Gagal delete token!'));
-                        redirect('Auth');
+                        redirect('auth');
                     }
                 }
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Gagal reset password! Email salah.'));
-                redirect('Auth');
+                redirect('auth');
             }
         } else {
             $this->session->set_flashdata('message', pesanGagal('Reset password gagal! Token salah.'));
-            redirect('Auth');
+            redirect('auth');
         }
     }
 
@@ -369,7 +374,7 @@ class Auth extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Gagal update password!'));
             }
 
-            redirect('Auth');
+            redirect('auth');
         }
     }
 
@@ -391,6 +396,6 @@ class Auth extends CI_Controller
         $session_data = $this->session->userdata('datauser');
         $data['role'] = $session_data['role_id'];
 
-        $this->load->view('Auth/blocked', $data);
+        $this->load->view('auth/blocked', $data);
     }
 }

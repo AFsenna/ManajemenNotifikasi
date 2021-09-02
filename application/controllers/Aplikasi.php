@@ -76,7 +76,7 @@ class Aplikasi extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Gagal menambahkan aplikasi!'));
             }
 
-            redirect('Aplikasi');
+            redirect('aplikasi');
         }
     }
 
@@ -92,7 +92,7 @@ class Aplikasi extends CI_Controller
             $this->session->set_flashdata('message', pesanGagal('Aplikasi gagal di aktifkan!'));
         }
 
-        redirect('Aplikasi');
+        redirect('aplikasi');
     }
 
     /**
@@ -107,7 +107,7 @@ class Aplikasi extends CI_Controller
             $this->session->set_flashdata('message', pesanGagal('Aplikasi gagal di nonAktifkan!'));
         }
 
-        redirect('Aplikasi');
+        redirect('aplikasi');
     }
 
     /**
@@ -141,7 +141,7 @@ class Aplikasi extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Aplikasi gagal di update!'));
             }
 
-            redirect('Aplikasi');
+            redirect('aplikasi');
         }
     }
 
@@ -156,7 +156,7 @@ class Aplikasi extends CI_Controller
 
         if ($cek) {
             $this->session->set_flashdata('message', pesanGagal('Aplikasi tidak bisa dihapus!'));
-            redirect('Aplikasi');
+            redirect('aplikasi');
         } else {
             if ($this->apk->prosesDeleteAplikasi($id)) {
                 $this->session->set_flashdata('message', pesanSukses('Aplikasi berhasil di hapus!'));
@@ -164,7 +164,7 @@ class Aplikasi extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Aplikasi gagal di hapus!'));
             }
 
-            redirect('Aplikasi');
+            redirect('aplikasi');
         }
     }
 }

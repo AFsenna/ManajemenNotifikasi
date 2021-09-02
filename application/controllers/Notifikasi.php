@@ -64,7 +64,7 @@ class Notifikasi extends CI_Controller
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Notifikasi gagal ditambahkan!'));
             }
-            redirect('Notifikasi/index/' . $namaAplikasi . '/' . $id);
+            redirect('notifikasi/index/' . $namaAplikasi . '/' . $id);
         }
     }
 
@@ -84,7 +84,7 @@ class Notifikasi extends CI_Controller
             } else {
                 $this->session->set_flashdata('message', pesanGagal('Notifikasi gagal diupdate!'));
             }
-            redirect('Notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+            redirect('notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
         }
     }
 
@@ -99,7 +99,7 @@ class Notifikasi extends CI_Controller
             $this->session->set_flashdata('message', pesanGagal('Notifikasi gagal dihapus!'));
         }
 
-        redirect('Notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+        redirect('notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
     }
 
     /**
@@ -153,6 +153,6 @@ class Notifikasi extends CI_Controller
         } else {
             $this->session->set_flashdata('message', pesanGagal('Notifikasi gagal dikirim!'));
         }
-        redirect('Notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
+        redirect('notifikasi/index/' . $namaAplikasi . '/' . $idAplikasi);
     }
 }

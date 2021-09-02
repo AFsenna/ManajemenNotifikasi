@@ -7,7 +7,7 @@
     <?= $this->session->flashdata('message'); ?>
     <?php if ($role_id == 2) : ?>
         <div class="mb-3">
-            <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newAplikasi">
+            <button class="btn btn-info btn-icon-split" data-toggle="modal" data-target="#newAplikasi">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
@@ -54,29 +54,27 @@
                                 <?php elseif ($role_id == 2) : ?>
                                     <td>
                                         <?php if ($app['status'] == 1) : ?>
-                                            <a href="<?= base_url('Aplikasi/nonAktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-danger btn-icon-split">
+                                            <a href="<?= base_url('Aplikasi/nonAktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-danger btn-sm mb-2">
                                                 <span class="text" data-toggle="tooltip" title="Non-Aktifkan Aplikasi">
                                                     <i class="fas fa-fw fa-times"></i>
                                                 </span>
                                             </a>
                                         <?php elseif ($app['status'] == 0) : ?>
-                                            <a href="<?= base_url('Aplikasi/aktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-success btn-icon-split">
+                                            <a href="<?= base_url('Aplikasi/aktifkan/' . $app['id_aplikasi']) ?>" class="btn btn-outline-success btn-sm mb-2">
                                                 <span class="text" data-toggle="tooltip" title="Aktifkan Aplikasi">
                                                     <i class="fas fa-fw fa-check"></i>
                                                 </span>
                                             </a>
                                         <?php endif; ?>
-                                        <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editAplikasi<?= $app['id_aplikasi'] ?>">
-                                            <span class="icon texat-white-50">
+                                        <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editAplikasi<?= $app['id_aplikasi'] ?>">
+                                            <span class="icon text-white" data-toggle="tooltip" title="Edit Aplikasi">
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </span>
-                                            <span class="text">Edit</span>
                                         </button>
-                                        <a href="<?= base_url('Aplikasi/deleteAplikasi/' . $app['id_aplikasi']) ?>" class="btn btn-danger btn-icon-split">
-                                            <span class="icon text-white-50">
+                                        <a href="<?= base_url('Aplikasi/deleteAplikasi/' . $app['id_aplikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Aplikasi">
+                                            <span class="icon text-white">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
-                                            <span class="text">Hapus</span>
                                         </a>
                                     </td>
                                 <?php endif; ?>

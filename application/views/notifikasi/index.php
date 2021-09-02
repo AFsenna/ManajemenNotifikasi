@@ -15,7 +15,7 @@
     <?= form_error('isinotif', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= $this->session->flashdata('message'); ?>
     <div class="mb-3">
-        <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newNotifikasi">
+        <button class="btn btn-info btn-icon-split" data-toggle="modal" data-target="#newNotifikasi">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
@@ -47,7 +47,7 @@
                         foreach ($notifikasi as $row) : ?>
                             <tr>
                                 <td><?= $no ?></td>
-                                <td><?= date('d-m-Y', strtotime($row['tanggalDibuat'])); ?></td>
+                                <td><?= date('d-M-Y', strtotime($row['tanggalDibuat'])); ?></td>
                                 <td><?= ucwords($row['judul']) ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#daftarPenerima<?= $row['id_notifikasi'] ?>">
@@ -126,7 +126,8 @@
                                 <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                 </p>
                                 <?php foreach ($pengguna as $row) : ?>
-                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= ucwords($row['nama_pengguna']) . '(' . $row['email_pengguna'] . ')' ?> </span> <?php endforeach; ?>
+                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= ucwords($row['nama_pengguna']) . '(' . $row['email_pengguna'] . ')' ?> </span>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -278,7 +279,7 @@ endforeach; ?>
 <?php endforeach; ?>
 <!-- endmodal -->
 
-<!-- Modal list aplikasi-->
+<!-- Modal detail notifikasi-->
 <?php $no = 1;
 foreach ($notifikasi as $row) : ?>
     <div class="modal fade" id="detailPengiriman<?= $row['id_notifikasi'] ?>" tabindex="-1" aria-labelledby="daftarPenerimaLabel" aria-hidden="true">
@@ -292,7 +293,7 @@ foreach ($notifikasi as $row) : ?>
                 </div>
                 <div class="modal-body">
                     <h6 class="mb-3 text-danger">Notifikasi No <?= $no ?></h6>
-                    <h6 class="mb-3 text-info">Tanggal dikirimkan : <?= date('d-m-Y', strtotime($row['tanggalTerkirim'])); ?></h6>
+                    <h6 class="mb-3 text-info">Tanggal dikirimkan : <?= date('d-M-Y', strtotime($row['tanggalTerkirim'])); ?></h6>
                     <hr class="mb-5">
                     <div class="table-responsive">
                         <table class="table table-bordered tablepengguna" id="dataTable" width="100%">

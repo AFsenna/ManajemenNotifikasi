@@ -102,7 +102,7 @@ class User extends CI_Controller
             $this->session->set_userdata('datauser', $data);
             $this->session->set_flashdata('message', pesanSukses('Profil berhasil diedit!'));
 
-            redirect('User');
+            redirect('user');
         }
     }
 
@@ -139,16 +139,16 @@ class User extends CI_Controller
             $newpassword = $this->input->post('newpassword1');
             if (!password_verify($password, $oldpassword)) {
                 $this->session->set_flashdata('message', pesanGagal('Wrong current password!!'));
-                redirect('User/changepassword');
+                redirect('user/changepassword');
             } else {
                 if ($password == $newpassword) {
                     $this->session->set_flashdata('message', pesanGagal('Password baru tidak boleh sama dengan password lama!'));
-                    redirect('User/changepassword');
+                    redirect('user/changepassword');
                 } else {
                     $passwordhash = password_hash($newpassword, PASSWORD_DEFAULT);
                     $this->UserModel->prosesUpdatePassword($passwordhash, $session_data['email']);
                     $this->session->set_flashdata('message', pesanSukses('Password berhasil diubah!!'));
-                    redirect('User/changepassword');
+                    redirect('user/changepassword');
                 }
             }
         }

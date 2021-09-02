@@ -6,7 +6,7 @@
     <?= form_error('role', '<div class="alert alert-danger" role="alert">', '</div>') ?>
     <?= $this->session->flashdata('message'); ?>
     <div class="mb-3">
-        <button class="btn btn-success btn-icon-split" data-toggle="modal" data-target="#newRole">
+        <button class="btn btn-info btn-icon-split" data-toggle="modal" data-target="#newRole">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
@@ -37,17 +37,15 @@
                                 <td><?= $no ?></td>
                                 <td><?= ucfirst($row['nama']) ?></td>
                                 <td>
-                                    <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editRole<?= $row['id_role'] ?>">
-                                        <span class="icon text-white-50">
+                                    <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editRole<?= $row['id_role'] ?>">
+                                        <span class="icon text-white" data-toggle="tooltip" title="Edit Role">
                                             <i class="fas fa-fw fa-edit"></i>
                                         </span>
-                                        <span class="text">Edit</span>
                                     </button>
-                                    <a href="<?= base_url('Role/deleteRole/' . $row['id_role']) ?>" class="btn btn-danger btn-icon-split">
-                                        <span class="icon text-white-50">
+                                    <a href="<?= base_url('Role/deleteRole/' . $row['id_role']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Role">
+                                        <span class="icon text-white">
                                             <i class="fas fa-fw fa-trash"></i>
                                         </span>
-                                        <span class="text">Hapus</span>
                                     </a>
                                 </td>
                             </tr>

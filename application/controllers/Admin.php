@@ -42,7 +42,7 @@ class Admin extends CI_Controller
         $data['role_id'] = $this->session_data['role_id'];
         $data['nama'] = $this->session_data['nama_lengkap'];
 
-        $this->template->render('Admin/index', $data);
+        $this->template->render('admin/index', $data);
     }
 
     /**

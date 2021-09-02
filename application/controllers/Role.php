@@ -56,7 +56,7 @@ class Role extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Role gagal ditambahkan!'));
             }
 
-            redirect('Role');
+            redirect('role');
         }
     }
 
@@ -78,7 +78,7 @@ class Role extends CI_Controller
                 $this->session->set_flashdata('message', pesanGagal('Role gagal diupdate!'));
             }
 
-            redirect('Role');
+            redirect('role');
         }
     }
 
@@ -101,6 +101,6 @@ class Role extends CI_Controller
             }
         }
 
-        redirect('Role');
+        redirect('role');
     }
 }

@@ -41,6 +41,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tanggal Dibuat</th>
                             <th>Nama</th>
                             <th>No HP</th>
                             <th>Email</th>
@@ -52,21 +53,20 @@
                         foreach ($pengguna as $row) : ?>
                             <tr>
                                 <td><?= $no ?></td>
+                                <td><?= date('d-M-Y', strtotime($row['tanggal_dibuat'])); ?></td>
                                 <td><?= ucfirst($row['nama_pengguna']) ?></td>
                                 <td><?= $row['notelp_pengguna'] ?></td>
                                 <td><?= $row['email_pengguna'] ?></td>
                                 <td>
-                                    <button class="btn btn-warning btn-icon-split" data-toggle="modal" data-target="#editPengguna<?= $row['id_pengguna'] ?>">
-                                        <span class="icon text-white-50">
+                                    <button class="btn btn-sm btn-warning mb-2" data-toggle="modal" data-target="#editPengguna<?= $row['id_pengguna'] ?>">
+                                        <span class="icon text-white" data-toggle="tooltip" title="Edit Pengguna">
                                             <i class="fas fa-fw fa-edit"></i>
                                         </span>
-                                        <span class="text">Edit</span>
                                     </button>
-                                    <a href="<?= base_url('PenggunaAplikasi/deletePengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" class="btn btn-danger btn-icon-split">
-                                        <span class="icon text-white-50">
+                                    <a href="<?= base_url('PenggunaAplikasi/deletePengguna/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_pengguna']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Pengguna">
+                                        <span class="icon text-white">
                                             <i class="fas fa-fw fa-trash"></i>
                                         </span>
-                                        <span class="text">Hapus</span>
                                     </a>
                                 </td>
                             </tr>
