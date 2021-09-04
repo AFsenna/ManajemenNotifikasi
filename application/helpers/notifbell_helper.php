@@ -63,10 +63,12 @@ function defaultPage()
 {
     $ci = get_instance();
     $session_data = $ci->session->userdata('datauser');
-    if ($session_data['role_id'] == 1) {
-        redirect('admin');
-    } else if ($session_data['role_id'] == 2) {
-        redirect('user');
+    if($session_data !=NULL){
+        if ($session_data['role_id'] == 1) {
+            redirect('admin');
+        } else if ($session_data['role_id'] == 2) {
+            redirect('user');
+        }
     }
 }
 
