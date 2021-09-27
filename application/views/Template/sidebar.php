@@ -37,6 +37,14 @@
                 </a>
             </li>
 
+            <!-- Nav Item - role -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('Media') ?>">
+                    <i class="fas fa-fw fa-clipboard-list"></i>
+                    <span>Media</span>
+                </a>
+            </li>
+
             <!-- Nav Item - user -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('Admin/user') ?>">
@@ -88,7 +96,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
                         <?php foreach ($aplikasi as $app) : ?>
-                            <a class="collapse-item" href="<?= base_url('PenggunaAplikasi/index/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                            <a class="collapse-item" href="<?= base_url('PenggunaAplikasi/index/' . $app['id_aplikasi']) ?>">
                                 <i class="fa fa-fw fa-clone mr-2"></i>
                                 <?= $app['nama_aplikasi'] ?>
                             </a>
@@ -107,7 +115,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Aplikasi : </h6>
                         <?php foreach ($aplikasi as $app) : ?>
-                            <a class="collapse-item" href="<?= base_url('Notifikasi/index/' . $app['nama_aplikasi'] . '/' . $app['id_aplikasi']) ?>">
+                            <a class="collapse-item" href="<?= base_url('Notifikasi/index/' . $app['id_aplikasi']) ?>">
                                 <i class="fa fa-fw fa-clone mr-2"></i>
                                 <?= $app['nama_aplikasi'] ?>
                             </a>

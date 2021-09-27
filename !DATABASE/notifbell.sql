@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 02 Sep 2021 pada 14.06
--- Versi server: 10.1.40-MariaDB
--- Versi PHP: 7.3.5
+-- Waktu pembuatan: 28 Sep 2021 pada 00.08
+-- Versi server: 10.4.20-MariaDB
+-- Versi PHP: 7.4.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -40,9 +39,7 @@ CREATE TABLE `aplikasi` (
 --
 
 INSERT INTO `aplikasi` (`id_aplikasi`, `nama_aplikasi`, `user_id`, `status`) VALUES
-(1, 'Cabriz', 2, 1),
-(2, 'Naest', 2, 1),
-(3, 'sa', 2, 1);
+(2, 'APK 1', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -61,11 +58,34 @@ CREATE TABLE `detail_notifikasi` (
 --
 
 INSERT INTO `detail_notifikasi` (`pengguna_id`, `notifikasi_id`, `status`) VALUES
-(1, 2, 1),
-(9, 2, 1),
-(10, 2, 1),
-(11, 2, 1),
-(12, 4, 0);
+(6, 2, 0),
+(6, 10, 1),
+(15, 11, 1),
+(6, 12, 1),
+(13, 12, 1),
+(6, 13, 1),
+(13, 13, 1),
+(14, 13, 0),
+(15, 13, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `media`
+--
+
+CREATE TABLE `media` (
+  `id_media` int(11) NOT NULL,
+  `nama_media` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `media`
+--
+
+INSERT INTO `media` (`id_media`, `nama_media`) VALUES
+(1, 'email'),
+(2, 'telegram');
 
 -- --------------------------------------------------------
 
@@ -76,6 +96,7 @@ INSERT INTO `detail_notifikasi` (`pengguna_id`, `notifikasi_id`, `status`) VALUE
 CREATE TABLE `notifikasi` (
   `id_notifikasi` int(11) NOT NULL,
   `aplikasi_id` int(11) NOT NULL,
+  `media_id` int(11) NOT NULL,
   `judul` varchar(128) NOT NULL,
   `isi` longtext NOT NULL,
   `status` int(11) NOT NULL,
@@ -87,11 +108,11 @@ CREATE TABLE `notifikasi` (
 -- Dumping data untuk tabel `notifikasi`
 --
 
-INSERT INTO `notifikasi` (`id_notifikasi`, `aplikasi_id`, `judul`, `isi`, `status`, `tanggalDibuat`, `tanggalTerkirim`) VALUES
-(2, 1, 'testing', '<p><b>haloo</b></p>', 1, '2021-09-16', '2021-09-02'),
-(3, 1, 'Pemotongan Gaji', '<p>dassa</p>', 0, '2021-08-03', '0000-00-00'),
-(4, 2, 'Pembayaran Uang Kas', '<p><b>Selamat siang, </b></p><ul><li><u>diharapkan untuk segera membayar kas karena akan segera diadakan pembukuan</u></li></ul>', 0, '2021-09-02', '0000-00-00'),
-(5, 3, 'Pengumpulan Laporan PJK', 'Deadline pengumpulan PJK : Senin <br>\r\nHarap segera dikumpulkan!!!!!', 0, '2021-09-01', '0000-00-00');
+INSERT INTO `notifikasi` (`id_notifikasi`, `aplikasi_id`, `media_id`, `judul`, `isi`, `status`, `tanggalDibuat`, `tanggalTerkirim`) VALUES
+(10, 2, 2, 'aku', '<p>kamu</p>', 1, '2021-09-28', '2021-09-28'),
+(11, 2, 1, 'axz', '<p>asa</p>', 1, '2021-09-28', '2021-09-28'),
+(12, 2, 2, 'haloo', 'dsbgsidjbgisd', 1, '2021-09-28', '2021-09-28'),
+(13, 2, 2, 'coba', '<p>ada</p>', 1, '2021-09-28', '2021-09-28');
 
 -- --------------------------------------------------------
 
@@ -103,6 +124,8 @@ CREATE TABLE `pengguna_aplikasi` (
   `id_pengguna` int(11) NOT NULL,
   `aplikasi_id` int(11) NOT NULL,
   `nama_pengguna` varchar(30) NOT NULL,
+  `username_telegram` varchar(30) DEFAULT NULL,
+  `userid_telegram` varchar(30) DEFAULT NULL,
   `email_pengguna` varchar(30) NOT NULL,
   `notelp_pengguna` varchar(18) NOT NULL,
   `status_pengguna` int(11) NOT NULL,
@@ -113,13 +136,11 @@ CREATE TABLE `pengguna_aplikasi` (
 -- Dumping data untuk tabel `pengguna_aplikasi`
 --
 
-INSERT INTO `pengguna_aplikasi` (`id_pengguna`, `aplikasi_id`, `nama_pengguna`, `email_pengguna`, `notelp_pengguna`, `status_pengguna`, `tanggal_dibuat`) VALUES
-(1, 1, 'Senna', 'sagoliacais@gmail.com', '+62822853122960', 1, '2021-08-11'),
-(9, 1, 'Felicia Seanne', 'Fgelicia@gmail.com', '+62822853122960', 1, '2021-09-01'),
-(10, 1, 'Hoshi', 'horange@gmail.com', '089907212341', 1, '2021-09-02'),
-(11, 1, 'Woozi', 'woahe@gmail.com', '085156084242', 1, '2021-09-01'),
-(12, 2, 'Senna', 'senna@gmail.com', '085156084243', 1, '2021-09-01'),
-(13, 1, 'Senna', 'senna@gmail.com', '085156084243', 1, '2021-09-01');
+INSERT INTO `pengguna_aplikasi` (`id_pengguna`, `aplikasi_id`, `nama_pengguna`, `username_telegram`, `userid_telegram`, `email_pengguna`, `notelp_pengguna`, `status_pengguna`, `tanggal_dibuat`) VALUES
+(6, 2, 'Sennana', 'seennaa', '1626261247', 'Fgelicia@gmail.com', '+6282285132960', 1, '2021-09-27'),
+(13, 2, 'Hoshi', 'hodsiador', '654321', 'horange@gmail.com', '+6289907212341', 1, '2021-09-27'),
+(14, 2, 'Woozi', NULL, '', 'woahe@gmail.com', '+6285156084242', 1, '2021-09-27'),
+(15, 2, 'Haruka', 'harugpa', '', 'haruna@gmail.com', '+6282456084203', 1, '2021-09-27');
 
 -- --------------------------------------------------------
 
@@ -175,8 +196,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nama_lengkap`, `username`, `notelp`, `email`, `password`, `role_id`, `status`) VALUES
-(1, 'Admin Notifbell', 'senna', '082285132960', 'fgelicia@gmail.com', '$2y$10$kKAVgxSgiz4XMrxlvSPLVu7m.tAje1tXkB074JWp/BBx1uGdlkg9C', 1, 1),
-(2, 'Michael Araona Wily', 'Michael', '089912347653', 'araona@gmail.com', '$2y$10$dtpCI5WXuC3yhluu0S1Y0eF9HiNFDKfqHqooQqHAOmnf7MFDLTsy2', 2, 1);
+(1, 'admin notifbell', 'admin', '+628232653623', 'admin@gmail.com', 'admin', 1, 1),
+(3, 'user notifbell', 'testing', '+6289912347652', 'testing@gmail.com', 'testing', 2, 1);
 
 --
 -- Indexes for dumped tables
@@ -197,11 +218,18 @@ ALTER TABLE `detail_notifikasi`
   ADD KEY `detail_notifikasi_ibfk_2` (`notifikasi_id`);
 
 --
+-- Indeks untuk tabel `media`
+--
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`id_media`);
+
+--
 -- Indeks untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
   ADD PRIMARY KEY (`id_notifikasi`),
-  ADD KEY `notifikasi_ibfk_1` (`aplikasi_id`);
+  ADD KEY `notifikasi_ibfk_1` (`aplikasi_id`),
+  ADD KEY `notifikasi_ibfk_2` (`media_id`);
 
 --
 -- Indeks untuk tabel `pengguna_aplikasi`
@@ -237,19 +265,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `aplikasi`
 --
 ALTER TABLE `aplikasi`
-  MODIFY `id_aplikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_aplikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `media`
+--
+ALTER TABLE `media`
+  MODIFY `id_media` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengguna_aplikasi`
 --
 ALTER TABLE `pengguna_aplikasi`
-  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`
@@ -267,7 +301,7 @@ ALTER TABLE `token`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -290,7 +324,8 @@ ALTER TABLE `detail_notifikasi`
 -- Ketidakleluasaan untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  ADD CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`aplikasi_id`) REFERENCES `aplikasi` (`id_aplikasi`) ON DELETE CASCADE;
+  ADD CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`aplikasi_id`) REFERENCES `aplikasi` (`id_aplikasi`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notifikasi_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id_media`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `pengguna_aplikasi`

@@ -41,9 +41,15 @@ class PenggunaAppModel extends CI_Model
             'aplikasi_id' => $data['aplikasi_id']
         ];
 
-        $isiCek = $this->db->get_where('pengguna_aplikasi', $cek)->row_array();
+        $cek2 = [
+            'notelp_pengguna' => $data['notelp_pengguna'],
+            'aplikasi_id' => $data['aplikasi_id']
+        ];
 
-        if ($isiCek) {
+        $isiCek = $this->db->get_where('pengguna_aplikasi', $cek)->row_array();
+        $isicek2 = $this->db->get_where('pengguna_aplikasi', $cek2)->row_array();
+
+        if ($isiCek || $isicek2) {
             $this->db->set('status_pengguna', 1);
             $this->db->where('id_pengguna', $isiCek['id_pengguna']);
             if ($this->db->update('pengguna_aplikasi')) {
@@ -94,6 +100,16 @@ class PenggunaAppModel extends CI_Model
     public function prosesDeletePengguna($id)
     {
         if ($this->db->delete('pengguna_aplikasi', ['id_pengguna' => $id])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateIDtelegram($idPengguna, $userid_telegram)
+    {
+        $this->db->where('id_pengguna', $idPengguna);
+        if ($this->db->update('pengguna_aplikasi', ['userid_telegram' => $userid_telegram])) {
             return true;
         } else {
             return false;

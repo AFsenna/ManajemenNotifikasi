@@ -12,6 +12,14 @@ class AplikasiModel extends CI_Model
     }
 
     /**
+     * Function getByID digunakan untuk mendapatkan data aplikasi berdasarkan id aplikasi yang dipilih
+     */
+    public function getByID($id)
+    {
+        return $this->db->get_where('aplikasi', ['id_aplikasi' => $id])->row_array();
+    }
+
+    /**
      * Function getAll digunakan untuk mendapatkan seluruh data aplikasi
      */
     public function getAll()

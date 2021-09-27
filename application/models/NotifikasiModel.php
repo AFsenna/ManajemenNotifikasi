@@ -8,15 +8,13 @@ class NotifikasiModel extends CI_Model
      */
     public function storeNotifikasi($data, $id)
     {
-        $judul = $data['judul'];
-        $isinotifikasi = $data['isinotif'];
-        $tanggal = $data['tanggal'];
         $isi = [
-            'judul' => $judul,
-            'isi' => $isinotifikasi,
+            'judul' => $data['judul'],
+            'isi' => $data['isinotif'],
+            'media_id' => $data['media_id'],
             'status' => 0,
             'aplikasi_id' => $id,
-            'tanggalDibuat' => $tanggal
+            'tanggalDibuat' => $data['tanggal'],
         ];
         if ($this->db->insert('notifikasi', $isi)) {
             $idNotif = $this->db->insert_id();
@@ -37,7 +35,12 @@ class NotifikasiModel extends CI_Model
      */
     public function getNotifikasi($idAplikasi)
     {
-        $query = $this->db->get_where('notifikasi', ['aplikasi_id' => $idAplikasi]);
+        $this->db->select('notifikasi.*');
+        $this->db->select('media.*');
+        $this->db->from('notifikasi');
+        $this->db->where('aplikasi_id', $idAplikasi);
+        $this->db->join('media', 'notifikasi.media_id = media.id_media');
+        $query = $this->db->get();
         return $query->result_array();
     }
 

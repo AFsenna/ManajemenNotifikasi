@@ -21,6 +21,12 @@
             </span>
             <span class="text">Tambah Notifikasi</span>
         </button>
+        <button class="btn btn-primary btn-icon-split" data-toggle="modal" data-target="#panduan">
+            <span class="icon text-white-50">
+                <i class="fas fa-exclamation-circle"></i>
+            </span>
+            <span class="text">Panduan</span>
+        </button>
     </div>
 
     <!-- DataTales Example -->
@@ -70,7 +76,7 @@
                                                 <i class="fas fa-fw fa-edit"></i>
                                             </span>
                                         </button>
-                                        <a href="<?= base_url('Notifikasi/deleteNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
+                                        <a href="<?= base_url('Notifikasi/deleteNotifikasi/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-sm btn-danger mb-2" data-toggle="tooltip" title="Hapus Notifikasi">
                                             <span class="icon text-white">
                                                 <i class="fas fa-fw fa-trash"></i>
                                             </span>
@@ -109,7 +115,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('Notifikasi/tambahNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+            <form action="<?= base_url('Notifikasi/tambahNotifikasi/' . $id_aplikasi) ?>" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
@@ -119,6 +125,14 @@
                         <textarea class="summernote" name="isinotif" placeholder="Isi Notifikasi" cols="30" rows="10"></textarea>
                     </div>
                     <div class="form-group">
+                        <select name="media_id" id="media_id" class="form-control">
+                            <option value="" disabled selected>-- Select Media --</option>
+                            <?php foreach ($media as $m) : ?>
+                                <option value="<?= $m['id_media'] ?>"><?= $m['nama_media'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <div class="card">
                             <div class="card-body text-dark">
                                 <h4> Pilih Penerima Notifikasi</h4>
@@ -126,7 +140,7 @@
                                 <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                 </p>
                                 <?php foreach ($pengguna as $row) : ?>
-                                    <span class="text-dark mr-2"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= ucwords($row['nama_pengguna']) . '(' . $row['email_pengguna'] . ')' ?> </span>
+                                    <span class="text-dark mr-3"><input type="checkbox" name="penerima[]" id="check<?= $row['id_pengguna'] ?>" class="pl" value="<?= $row['id_pengguna'] ?>"> <?= ucwords($row['nama_pengguna']) . '(' . $row['email_pengguna'] . ')' ?> </span>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -153,7 +167,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('Notifikasi/editNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi) ?>" method="POST">
+                <form action="<?= base_url('Notifikasi/editNotifikasi/' . $id_aplikasi) ?>" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="tanggal" class="form-control" value="<?= date("Y-m-d"); ?>">
                         <input type="hidden" name="idnotif" class="form-control" value="<?= $row['id_notifikasi'] ?>">
@@ -163,6 +177,15 @@
                         <div class="form-group">
                             <textarea class="summernote" name="isinotif" placeholder="Isi Notifikasi" cols="30" rows="10"><?= $row['isi'] ?></textarea>
                         </div>
+                        <div class="form-group">
+                            <select name="media_id" id="media_id" class="form-control">
+                                <option value="" disabled selected>-- Select Media --</option>
+                                <?php foreach ($media as $m) : ?>
+                                    <option value="<?= $m['id_media'] ?>" <?php if ($row['media_id'] == $m['id_media']) : ?>selected<?php endif ?>>
+                                        <?= ucfirst($m['nama_media']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <div class=" form-group">
                             <div class="card">
                                 <div class="card-body text-dark">
@@ -171,7 +194,7 @@
                                     <div class="btn btn-success" onclick="checkAll()">Pilih Semua</div>
                                     </p>
                                     <?php foreach ($pengguna as $us) : ?>
-                                        <span class="text-dark mr-2"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= ucwords($us['nama_pengguna']) . '(' . $us['email_pengguna'] . ')' ?> </span>
+                                        <span class="text-dark mr-3"><input type="checkbox" <?= checkPengguna($us['id_pengguna'], $row['id_notifikasi']) ?> name="penerima[]" class="pl" value="<?= $us['id_pengguna'] ?>"> <?= ucwords($us['nama_pengguna']) . '(' . $us['email_pengguna'] . ')' ?> </span>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -202,6 +225,7 @@ foreach ($notifikasi as $row) : ?>
                 </div>
                 <div class="modal-body">
                     <h6 class="mb-3 text-danger">Notifikasi No : <?= $no ?></h6>
+                    <h6>Media Pengiriman : <?= ucfirst($row['nama_media']); ?></h6>
                     <div>
                         <div class="card mb-4">
                             <div class="card-header">
@@ -266,12 +290,17 @@ endforeach; ?>
                 <div class="modal-body">
                     <strong>
                         <h6 style="color:crimson">Judul Notifikasi : <?= $row['judul'] ?> </h6>
-                    </strong><br>
+                    </strong>
+                    <h6 style="color:crimson">Media Pengiriman : <?= $row['nama_media'] ?> </h6>
                     Apakah anda yakin akan mengirim notifikasi ke penerima?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a href="<?= base_url('Notifikasi/kirimNotifikasi/' . $namaAplikasi . '/' . $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
+                    <?php if ($row['nama_media'] == 'telegram') : ?>
+                        <button class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>" onclick="useridTele(`<?= $row['id_notifikasi'] ?>`,`<?= $id_aplikasi ?>`)">Kirimkan</button>
+                    <?php elseif ($row['nama_media'] == 'email') : ?>
+                        <a href="<?= base_url('Notifikasi/kirimNotifikasi/' .  $id_aplikasi . '/' . $row['id_notifikasi']) ?>" class="btn btn-primary" id="btnKirim<?= $row['id_notifikasi'] ?>">Kirimkan</a>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -286,14 +315,16 @@ foreach ($notifikasi as $row) : ?>
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="daftarPenerimaLabel">Detail Notifikasi</h5>
+                    <h5 class="modal-title" id="daftarPenerimaLabel">Detail Notifikasi No <?= $no ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button> </br>
                 </div>
                 <div class="modal-body">
-                    <h6 class="mb-3 text-danger">Notifikasi No <?= $no ?></h6>
-                    <h6 class="mb-3 text-info">Tanggal dikirimkan : <?= date('d-M-Y', strtotime($row['tanggalTerkirim'])); ?></h6>
+                    <div class="row mb-3 text-info d-flex justify-content-between">
+                        <h6>Tanggal dikirimkan : <?= date('d-M-Y', strtotime($row['tanggalTerkirim'])); ?></h6>
+                        <h6>Media Pengiriman : <?= ucfirst($row['nama_media']); ?></h6>
+                    </div>
                     <hr class="mb-5">
                     <div class="table-responsive">
                         <table class="table table-bordered tablepengguna" id="dataTable" width="100%">
@@ -316,7 +347,7 @@ foreach ($notifikasi as $row) : ?>
                                             <td><?= $us['email_pengguna'] ?></td>
                                             <td>
                                                 <?php if ($us['status'] == 0) : ?>
-                                                    <div class="badge badge-pill badge-danger" style="max-width: 200px; font-size:15px">Email tidak ditemukan</div>
+                                                    <div class="badge badge-pill badge-danger" style="max-width: 200px; font-size:15px">Tidak Ditemukan</div>
                                                 <?php elseif ($us['status'] == 1) : ?>
                                                     <div class="badge badge-pill badge-success" style="max-width: 200px; font-size:15px">Berhasil Terkirim</div>
                                                 <?php endif; ?>
@@ -340,6 +371,39 @@ foreach ($notifikasi as $row) : ?>
 endforeach; ?>
 <!-- endmodal -->
 
+<!-- Modal panduan-->
+<div class="modal fade" id="panduan" data-backdrop="static" tabindex="-1" aria-labelledby="panduanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="panduanLabel">Panduan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <ol class="mt-3" type="1">
+                <div class="mb-3">
+                    <li class="text-info">Untuk pengiriman notifikasi dengan media email</li>
+                    <ul>
+                        <li>Pastikan data email sudah terisi dengan benar</li>
+                    </ul>
+                </div>
+                <div class="mb-2">
+                    <li class="text-info">Untuk pengiriman notifikasi dengan media telegram</li>
+                    <ul>
+                        <li>Pastikan pengguna aplikasi sudah follow / start bot @Notifbell di telegram</li>
+                        <li>Pastikan data nomor telepon terisi dengan benar</li>
+                        <li>Pastikan data username telegram sudah terisi dengan benar</li>
+                        <li>Telegram hanya dapat menggunakan sedikit tag HTML jadi pastikan tidak ada tag p dan br pada notifikasi anda</li>
+                    </ul>
+                </div>
+            </ol>
+            <span class="text-danger ml-2">*Apabila ada data yang kurang maka pengguna aplikasi anda tidak akan mendapatkan notifikasi</span>
+        </div>
+    </div>
+</div>
+<!-- endmodal -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
     <?php foreach ($notifikasi as $row) : ?>
@@ -360,10 +424,9 @@ endforeach; ?>
         tabsize: 2,
         height: 120,
         toolbar: [
-            ['style', ['style']],
+            // ['style', ['style']],
             ['font', ['bold', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
+            // ['para', ['ul', 'ol', 'paragraph']],
             ['insert', ['link']],
             ['view', ['codeview', 'help']]
         ]
@@ -385,7 +448,47 @@ endforeach; ?>
         return clicked;
     }
 
+
+    function useridTele(idnotif, idapk) {
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url(); ?>Notifikasi/selectUser/" + idnotif,
+            async: true,
+            cache: false,
+            success: function(result) {
+                var obj = $.parseJSON(result);
+                // var user_id = [];
+                // console.log(obj);
+                for (let i = 0; i < obj.length; ++i) {
+                    // console.log(obj[i]['nama_pengguna']);
+                    if (obj[i]['userid_telegram'] == null) {
+                        $.get('https://api.telegram.org/bot1962226292:AAGcBqfrYjaZi9ViByYFmIRLxXh-LgC-u-A/sendContact?chat_id=1626261247&phone_number=' + obj[i]['notelp_pengguna'] + '&first_name=' + obj[i]['username_telegram'], function(data) {
+                            // console.log(data.result.contact.user_id);
+                            // user_id.push(data.result.contact.user_id);
+                            $.ajax({
+                                type: "POST",
+                                url: "<?= base_url(); ?>Notifikasi/storeIdtele",
+                                data: {
+                                    userid_telegram: data.result.contact.user_id, // Second add quotes on the value.
+                                    user_id: obj[i]['id_pengguna'],
+                                },
+                                cache: false,
+                                dataType: 'json',
+                            });
+                        });
+                    }
+                    // else {
+                    //     user_id.push(obj[i]['userid_telegram']);
+                    // }
+                }
+                // console.log(user_id);
+            }
+        });
+        window.location.replace(`<?= base_url('Notifikasi/kirimNotifikasi/') ?>${idapk}<?= '/' ?>${idnotif}`);
+        // `<?= base_url('Notifikasi/kirimNotifikasi/') ?>${idapk}<?= '/' ?>${idnotif}`;
+    }
+
     $(document).ready(function() {
         $('.tablepengguna').dataTable();
-    })
+    });
 </script>
