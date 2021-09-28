@@ -155,9 +155,9 @@ class Notifikasi extends CI_Controller
                 }
             }
         } else if ($notif['media_id'] == 2) {
-            $pesan = '<b>' . $notif['judul'] . '</b> ' . $notif['isi'] . ' <i> notifikasi ini dikirim dari aplikasi : ' . $namaAplikasi['nama_aplikasi'] . '</i>';
-            $pesan = str_replace("<p>", "", $pesan);
-            $pesan = str_replace("</p>", "", $pesan);
+            $notif1 = str_replace("<p>", "", $notif['isi']);
+            $notif2 = str_replace("</p>", "", $notif1);
+            $pesan = '<b>' . $notif['judul'] . '</b>' . PHP_EOL . $notif2 . PHP_EOL . '<i> notifikasi ini dikirim dari aplikasi : ' . $namaAplikasi['nama_aplikasi'] . '</i>';
 
             $secret_token = "1962226292:AAGcBqfrYjaZi9ViByYFmIRLxXh-LgC-u-A"; //token bot
             foreach ($pengguna as $row) {
