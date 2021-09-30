@@ -457,14 +457,10 @@ endforeach; ?>
             cache: false,
             success: function(result) {
                 var obj = $.parseJSON(result);
-                // var user_id = [];
-                // console.log(obj);
                 for (let i = 0; i < obj.length; ++i) {
-                    // console.log(obj[i]['nama_pengguna']);
-                    if (obj[i]['userid_telegram'] == null) {
+                    // console.log(obj[i]['userid_telegram']);
+                    if (obj[i]['userid_telegram'] == null || obj[i]['userid_telegram'] == '') {
                         $.get('https://api.telegram.org/bot1962226292:AAGcBqfrYjaZi9ViByYFmIRLxXh-LgC-u-A/sendContact?chat_id=1626261247&phone_number=' + obj[i]['notelp_pengguna'] + '&first_name=' + obj[i]['username_telegram'], function(data) {
-                            // console.log(data.result.contact.user_id);
-                            // user_id.push(data.result.contact.user_id);
                             $.ajax({
                                 type: "POST",
                                 url: "<?= base_url(); ?>Notifikasi/storeIdtele",
@@ -477,15 +473,13 @@ endforeach; ?>
                             });
                         });
                     }
-                    // else {
-                    //     user_id.push(obj[i]['userid_telegram']);
-                    // }
                 }
-                // console.log(user_id);
             }
         });
-        window.location.replace(`<?= base_url('Notifikasi/kirimNotifikasi/') ?>${idapk}<?= '/' ?>${idnotif}`);
-        // `<?= base_url('Notifikasi/kirimNotifikasi/') ?>${idapk}<?= '/' ?>${idnotif}`;
+
+        window.setTimeout(function() {
+            window.location.href = "<?= base_url() ?>Notifikasi/kirimNotifikasi/" + idapk + '/' + idnotif;
+        }, 5000);
     }
 
     $(document).ready(function() {

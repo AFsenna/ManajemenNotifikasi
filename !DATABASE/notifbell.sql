@@ -57,16 +57,16 @@ CREATE TABLE `detail_notifikasi` (
 -- Dumping data untuk tabel `detail_notifikasi`
 --
 
-INSERT INTO `detail_notifikasi` (`pengguna_id`, `notifikasi_id`, `status`) VALUES
-(6, 2, 0),
-(6, 10, 1),
-(15, 11, 1),
-(6, 12, 1),
-(13, 12, 1),
-(6, 13, 1),
-(13, 13, 1),
-(14, 13, 0),
-(15, 13, 0);
+-- INSERT INTO `detail_notifikasi` (`pengguna_id`, `notifikasi_id`, `status`) VALUES
+-- (6, 2, 0),
+-- (6, 10, 1),
+-- (15, 11, 1),
+-- (6, 12, 1),
+-- (13, 12, 1),
+-- (6, 13, 1),
+-- (13, 13, 1),
+-- (14, 13, 0),
+-- (15, 13, 0);
 
 -- --------------------------------------------------------
 
@@ -108,11 +108,11 @@ CREATE TABLE `notifikasi` (
 -- Dumping data untuk tabel `notifikasi`
 --
 
-INSERT INTO `notifikasi` (`id_notifikasi`, `aplikasi_id`, `media_id`, `judul`, `isi`, `status`, `tanggalDibuat`, `tanggalTerkirim`) VALUES
-(10, 2, 2, 'aku', '<p>kamu</p>', 1, '2021-09-28', '2021-09-28'),
-(11, 2, 1, 'axz', '<p>asa</p>', 1, '2021-09-28', '2021-09-28'),
-(12, 2, 2, 'haloo', 'dsbgsidjbgisd', 1, '2021-09-28', '2021-09-28'),
-(13, 2, 2, 'coba', '<p>ada</p>', 1, '2021-09-28', '2021-09-28');
+-- INSERT INTO `notifikasi` (`id_notifikasi`, `aplikasi_id`, `media_id`, `judul`, `isi`, `status`, `tanggalDibuat`, `tanggalTerkirim`) VALUES
+-- (10, 2, 2, 'aku', '<p>kamu</p>', 1, '2021-09-28', '2021-09-28'),
+-- (11, 2, 1, 'axz', '<p>asa</p>', 1, '2021-09-28', '2021-09-28'),
+-- (12, 2, 2, 'haloo', 'dsbgsidjbgisd', 1, '2021-09-28', '2021-09-28'),
+-- (13, 2, 2, 'coba', '<p>ada</p>', 1, '2021-09-28', '2021-09-28');
 
 -- --------------------------------------------------------
 
@@ -136,11 +136,11 @@ CREATE TABLE `pengguna_aplikasi` (
 -- Dumping data untuk tabel `pengguna_aplikasi`
 --
 
-INSERT INTO `pengguna_aplikasi` (`id_pengguna`, `aplikasi_id`, `nama_pengguna`, `username_telegram`, `userid_telegram`, `email_pengguna`, `notelp_pengguna`, `status_pengguna`, `tanggal_dibuat`) VALUES
-(6, 2, 'Sennana', 'seennaa', '1626261247', 'Fgelicia@gmail.com', '+6282285132960', 1, '2021-09-27'),
-(13, 2, 'Hoshi', 'hodsiador', '654321', 'horange@gmail.com', '+6289907212341', 1, '2021-09-27'),
-(14, 2, 'Woozi', NULL, '', 'woahe@gmail.com', '+6285156084242', 1, '2021-09-27'),
-(15, 2, 'Haruka', 'harugpa', '', 'haruna@gmail.com', '+6282456084203', 1, '2021-09-27');
+-- INSERT INTO `pengguna_aplikasi` (`id_pengguna`, `aplikasi_id`, `nama_pengguna`, `username_telegram`, `userid_telegram`, `email_pengguna`, `notelp_pengguna`, `status_pengguna`, `tanggal_dibuat`) VALUES
+-- (6, 2, 'Sennana', 'seennaa', '1626261247', 'Fgelicia@gmail.com', '+6282285132960', 1, '2021-09-27'),
+-- (13, 2, 'Hoshi', 'hodsiador', '654321', 'horange@gmail.com', '+6289907212341', 1, '2021-09-27'),
+-- (14, 2, 'Woozi', NULL, '', 'woahe@gmail.com', '+6285156084242', 1, '2021-09-27'),
+-- (15, 2, 'Haruka', 'harugpa', '', 'haruna@gmail.com', '+6282456084203', 1, '2021-09-27');
 
 -- --------------------------------------------------------
 
@@ -318,14 +318,14 @@ ALTER TABLE `aplikasi`
 --
 ALTER TABLE `detail_notifikasi`
   ADD CONSTRAINT `detail_notifikasi_ibfk_1` FOREIGN KEY (`pengguna_id`) REFERENCES `pengguna_aplikasi` (`id_pengguna`),
-  ADD CONSTRAINT `detail_notifikasi_ibfk_2` FOREIGN KEY (`notifikasi_id`) REFERENCES `notifikasi` (`id_notifikasi`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `detail_notifikasi_ibfk_2` FOREIGN KEY (`notifikasi_id`) REFERENCES `notifikasi` (`id_notifikasi`) ON DELETE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
   ADD CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`aplikasi_id`) REFERENCES `aplikasi` (`id_aplikasi`) ON DELETE CASCADE,
-  ADD CONSTRAINT `notifikasi_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id_media`) ON DELETE CASCADE;
+  ADD CONSTRAINT `notifikasi_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id_media`);
 
 --
 -- Ketidakleluasaan untuk tabel `pengguna_aplikasi`
