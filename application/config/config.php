@@ -23,7 +23,7 @@ date_default_timezone_set("Asia/Jakarta");
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/ManajemenNotifikasi/';
+$config['base_url'] = 'https://notifbell.awsen.my.id/';
 
 /*
 |--------------------------------------------------------------------------
@@ -521,3 +521,4 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+$config['sess_save_path'] = '/tmp';
