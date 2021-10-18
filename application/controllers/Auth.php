@@ -22,11 +22,11 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-
+        
         $this->load->model('AuthModel', 'auth');
         $this->load->model('TokenModel', 'token');
     }
-
+    
     /**
      * Function index digunakan untuk menuju tampilan login
      */
@@ -34,8 +34,9 @@ class Auth extends CI_Controller
     {
         defaultPage();
         $data['title'] = 'Login';
-
+        
         $this->template->renderAuth('auth/login', $data);
+        
     }
 
     /**

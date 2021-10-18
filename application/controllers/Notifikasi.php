@@ -145,7 +145,7 @@ class Notifikasi extends CI_Controller
                 $this->email->to($email);
                 $this->email->subject($data['judul']);
 
-                $body = $this->load->view('Notifikasi/tampilanEmail', $data, TRUE);
+                $body = $this->load->view('notifikasi/tampilanEmail', $data, TRUE);
                 $this->email->message($body);
 
                 if ($this->email->send()) {
