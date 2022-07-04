@@ -41,8 +41,8 @@ class Auth extends CI_Controller
     public function apiLogin()
     {
         $username = $_POST['username'];
-        echo json_encode($username);
-        $password = $this->input->post('password');
+        $password = $_POST['password'];
+        echo json_encode($username . 'senna cantik');
         $user = $this->auth->login($username);
 
         if ($user) {
