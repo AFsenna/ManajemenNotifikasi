@@ -22,11 +22,11 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->load->model('AuthModel', 'auth');
         $this->load->model('TokenModel', 'token');
     }
-    
+
     /**
      * Function index digunakan untuk menuju tampilan login
      */
@@ -34,9 +34,39 @@ class Auth extends CI_Controller
     {
         defaultPage();
         $data['title'] = 'Login';
-        
+
         $this->template->renderAuth('auth/login', $data);
-        
+    }
+
+    public function apiLogin()
+    {
+        $username = $_POST['username'];
+        echo json_encode($username);
+        $password = $this->input->post('password');
+        $user = $this->auth->login($username);
+
+        if ($user) {
+            if ($user['status'] == 1) {
+                $data = [
+                    'nama_lengkap' => ucwords($user['nama_lengkap']),
+                    'username' => ucfirst($user['username']),
+                    'notelp' => $user['notelp'],
+                    'email' => $user['email'],
+                    'status' => $user['status'],
+                    'role_id' => $user['role_id'],
+                    'id_user' => $user['id_user'],
+                    'password' => $user['password']
+                ];
+
+                if (password_verify($password, $user['password'])) {
+                } else {
+                }
+            } else {
+                //akun blm aktif
+            }
+        } else {
+            //akun gaada
+        }
     }
 
     /**
